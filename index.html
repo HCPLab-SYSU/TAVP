@@ -1,0 +1,1407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="text/javascript" async
+        src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learning to See and Act: Task-Aware View Planning for Robotic Manipulation</title>
+    <link rel="icon" type="image/x-icon" href="static/images/logo.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Source+Sans+Pro:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --accent: #e74c3c;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+            --gray: #95a5a6;
+            --light-gray: #f5f7fa;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Source Sans Pro', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: var(--light-gray);
+            overflow-x: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary), #1a2530);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .header-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M0,0 L100,0 L100,100 Z" fill="rgba(255,255,255,0.05)"/></svg>') no-repeat bottom right;
+            opacity: 0.3;
+            background-size: 50% auto;
+        }
+
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .authors {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .author {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.5rem 1.2rem;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .author sup {
+            font-size: 0.7rem;
+            vertical-align: super;
+            margin-left: 2px;
+        }
+
+        .author:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-3px);
+        }
+
+        .affiliations {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.5rem;
+            margin: 1rem 0;
+            font-size: 0.95rem;
+            color: rgba(255, 255, 255, 0.85);
+        }
+
+        .affiliation {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.7rem 1.2rem;
+            border-radius: 30px;
+        }
+
+        .affiliation-logo {
+            width: 30px;
+            height: 30px;
+            margin-right: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            border-radius: 50%;
+            padding: 5px;
+        }
+
+        .affiliation-logo img {
+            max-width: 100%;
+            max-height: 100%;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.8rem 1.8rem;
+            background: var(--secondary);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: var(--transition);
+            box-shadow: var(--shadow);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+            background: #2980b9;
+        }
+
+        .btn i {
+            margin-right: 0.6rem;
+        }
+
+        .btn-paper {
+            background: var(--accent);
+        }
+
+        .btn-paper:hover {
+            background: #c0392b;
+        }
+
+        section {
+            padding: 1rem 1rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 0.5rem;
+            position: relative;
+        }
+
+        .section-title h2 {
+            font-size: 3rem;
+            color: var(--primary);
+            display: inline-block;
+            padding-bottom: 0.5rem;
+        }
+
+        .section-title h2:after {
+            content: '';
+            position: absolute;
+            width: 80px;
+            height: 4px;
+            background: var(--secondary);
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 2px;
+        }
+
+        .abstract {
+            background: white;
+            border-radius: 10px;
+            padding: 2.5rem;
+            box-shadow: var(--shadow);
+            margin-bottom: 3rem;
+        }
+
+        .abstract p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #444;
+        }
+
+        .highlight {
+            background: rgba(52, 152, 219, 0.1);
+            border-left: 4px solid var(--secondary);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 0 5px 5px 0;
+        }
+
+        .teaser {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .teaser-content {
+            flex: 1;
+            min-width: 300px;
+            font-size: 1.1rem;
+        }
+
+        .teaser-visual {
+            flex: 1;
+            min-width: 300px;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .teaser-visual img {
+            width: 100%;
+            height: auto;
+            border-bottom: 1px solid #eee;
+        }
+
+        .visual-caption {
+            padding: 1rem;
+            background: #f9f9f9;
+            font-size: 1.0rem;
+            color: #666;
+        }
+
+        .problem-solution {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-header {
+            padding: 1.5rem;
+            background: var(--primary);
+            color: white;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .card-body {
+            padding: 1.5rem;
+            font-size: 1.1rem;
+        }
+
+        .card-body ul {
+            padding-left: 1.5rem;
+            margin: 1rem 0;
+        }
+
+        .card-body li {
+            margin-bottom: 0.8rem;
+        }
+
+        .framework {
+            margin: 3rem 0;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+
+        .framework-header {
+            padding: 1.5rem;
+            background: var(--primary);
+            color: white;
+            text-align: center;
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+
+        .framework-image {
+            padding: 2rem;
+            text-align: center;
+            background: #f9f9f9;
+            font-size: 1.0rem;
+        }
+
+        .framework-image img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+
+        .framework-steps {
+            padding: 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .step {
+            background: var(--light-gray);
+            border-radius: 8px;
+            padding: 1.5rem;
+            position: relative;
+            border-left: 4px solid var(--secondary);
+            font-size: 1.1rem;
+        }
+
+        .step-number {
+            position: absolute;
+            top: -15px;
+            left: -15px;
+            width: 40px;
+            height: 40px;
+            background: var(--secondary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        .results {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .result-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+
+        .result-title {
+            padding: 1.2rem;
+            background: var(--primary);
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .result-content {
+            padding: 1.5rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            font-size: 0.95rem;
+        }
+
+        th, td {
+            padding: 0.8rem;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+
+        th {
+            background-color: var(--primary);
+            color: white;
+            font-weight: 600;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .comparison {
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            margin: 3rem 0;
+            font-size: 1.2rem;
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .comparison-item {
+            text-align: center;
+            padding: 1.5rem;
+            border-radius: 8px;
+            background: var(--light-gray);
+        }
+
+        .comparison-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--secondary);
+            margin: 1rem 0;
+        }
+
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            margin: 2rem 0;
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .conclusion {
+            background: linear-gradient(135deg, var(--primary), #1a2530);
+            color: white;
+            padding: 3rem 2rem;
+            border-radius: 10px;
+            margin: 3rem 0;
+        }
+
+        .conclusion-content {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .conclusion h2 {
+            margin-bottom: 2rem;
+            font-size: 2rem;
+        }
+
+        footer {
+            background: var(--dark);
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-logo {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--secondary);
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: #bbb;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+        .copyright {
+            margin-top: 2rem;
+            color: #95a5a6;
+            font-size: 0.9rem;
+        }
+
+        .university-logos {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+
+        .university-logo {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            max-width: 120px;
+        }
+
+        .university-logo img {
+            width: 80px;
+            height: 80px;
+            object-fit: contain;
+            margin-bottom: 10px;
+        }
+
+        .author-notes {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .bibtex {
+            background: white;
+            border-radius: 10px;
+            padding: 0.5rem;
+            margin:  1rem auto;
+            max-width: 800px;
+            box-shadow: var(--shadow);
+            font-family: monospace;
+            white-space: pre-wrap;
+            overflow-x: auto;
+            text-align: left;
+        }
+
+        /* Media galleries */
+        .media-gallery {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+            margin: 3rem 0;
+        }
+
+        .gallery-header {
+            grid-column: 1 / -1;
+            text-align: center;
+            margin-bottom: 20px;
+            color: var(--primary);
+        }
+
+        .media-item {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            font-size: 1rem;
+        }
+
+        .media-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        .media-item img, .media-item video {
+            width: 100%;
+            min-height: 300px;
+            /* min-width: 600px; */
+            height: auto;
+            display: block;
+        }
+
+        .play-indicator {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80px;
+            height: 80px;
+            background: rgba(255,255,255,0.8);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0.8;
+            transition: var(--transition);
+            pointer-events: none;
+        }
+
+        .play-indicator::after {
+            content: '';
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 15px 0 15px 25px;
+            border-color: transparent transparent transparent var(--primary);
+            margin-left: 5px;
+        }
+
+        .media-item:hover .play-indicator {
+            opacity: 0;
+        }
+
+        .media-caption {
+            padding: 15px;
+            font-size: 0.9rem;
+            text-align: center;
+            background: #f9f9f9;
+        }
+
+        .simulation-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 15px;
+            margin: 3rem 0;
+        }
+
+        .simulation-header {
+            grid-column: 1 / -1;
+            text-align: center;
+            margin-bottom: 20px;
+            color: var(--primary);
+        }
+
+        .simulation-item {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s ease;
+            text-align: center;
+        }
+
+        .simulation-item video {
+            width: 100%;
+            height: 128px;
+            display: block;
+        }
+
+        .video-name {
+            margin-top: 5px;
+            font-weight: bold;
+        }
+
+        .point-cloud-container {
+            text-align: center;
+            margin: 3rem 0;
+        }
+
+        .point-cloud-header {
+            margin-bottom: 20px;
+            color: var(--primary);
+        }
+
+        .point-cloud-gif {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.2rem;
+            }
+
+            .section-title h2 {
+                font-size: 1.8rem;
+            }
+
+            .teaser {
+                flex-direction: column;
+            }
+
+            .buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .bibtex {
+                padding: 1rem;
+                font-size: 0.8rem;
+            }
+
+            .media-gallery {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-bg"></div>
+        <div class="header-content">
+            <h1>Learning to See and Act: Task-Aware View Planning for Robotic Manipulation</h1>
+
+            <div class="authors">
+                <div class="author">Yongjie Bai<sup>1,2</sup><sup>*</sup></div>
+                <div class="author">Zhouxia Wang<sup>3</sup><sup>*</sup></div>
+                <div class="author">Yang Liu<sup>1</sup><sup>†</sup></div>
+                <div class="author">Weixing Chen<sup>1</sup></div>
+                <div class="author">Ziliang Chen<sup>2</sup></div>
+                <div class="author">Mingtong Dai<sup>2,4</sup></div>
+                <div class="author">Yongsen Zheng<sup>3</sup></div>
+                <div class="author">Lingbo Liu<sup>2</sup></div>
+                <div class="author">Guanbin Li<sup>1,2</sup></div>
+                <div class="author">Liang Lin<sup>1,2</sup></div>
+            </div>
+
+            <div class="author-notes">
+                <small><sup>*</sup>Equal Contribution</small>
+                <small>, <sup>†</sup>Corresponding Author</small>
+            </div>
+
+            <div class="affiliations">
+                <div class="affiliation">
+                    <div class="affiliation-logo">
+                        <img src="static/images/logo/sysu.png" alt="Sun Yat-sen University">
+                    </div>
+                    <div><sup>1</sup>School of Computer Science and Engineering, Sun Yat-sen University</div>
+                </div>
+                <div class="affiliation">
+                    <div class="affiliation-logo">
+                        <img src="static/images/logo/pcl.png" alt="Pengcheng Laboratory">
+                    </div>
+                    <div><sup>2</sup>Pengcheng Laboratory</div>
+                </div>
+                <div class="affiliation">
+                    <div class="affiliation-logo">
+                        <img src="static/images/logo/nyu.png" alt="Nanyang Technological University">
+                    </div>
+                    <div><sup>3</sup>College of Computing and Data Science, Nanyang Technological University</div>
+                </div>
+                <div class="affiliation">
+                    <div class="affiliation-logo">
+                        <img src="static/images/logo/cas.png" alt="Chinese Academy of Sciences">
+                    </div>
+                    <div><sup>4</sup>Shenzhen Institutes of Advanced Technology, Chinese Academy of Sciences</div>
+                </div>
+            </div>
+
+            <div class="buttons">
+                <a href="https://arxiv.org/pdf/" class="btn btn-paper"><i class="fas fa-file-pdf"></i> Paper PDF</a>
+                <!-- <a href="#" class="btn"><i class="fas fa-video"></i> Video</a> -->
+                <a href="https://github.com/baiyu858/TAVP" class="btn"><i class="fas fa-code"></i> Code (Coming Soon)</a>
+                <!-- <a href="#" class="btn"><i class="fas fa-database"></i> Dataset</a> -->
+            </div>
+        </div>
+    </header>
+
+    <section>
+        <div class="section-title">
+            <h2>Abstract</h2>
+        </div>
+
+        <div class="abstract">
+            <p>
+                Recent vision-language-action (VLA) models for multi-task robotic manipulation commonly rely on static viewpoints and shared visual encoders, which limit 3D perception and cause task interference, hindering robustness and generalization. In this work, we propose Task-Aware View Planning (TAVP), a framework designed to overcome these challenges by integrating active view planning with task-specific representation learning.
+            </p>
+
+            <div class="highlight">
+                TAVP employs an efficient exploration policy, accelerated by a novel pseudo-environment, to actively acquire informative views. Furthermore, we introduce a Mixture-of-Experts (MoE) visual encoder to disentangle features across different tasks, boosting both representation fidelity and task generalization.
+            </div>
+
+            <p>
+                By learning to see the world in a task-aware way, TAVP generates more complete and discriminative visual representations, demonstrating significantly enhanced action prediction across a wide array of manipulation challenges. Extensive experiments on RLBench tasks show that our proposed TAVP model achieves superior performance over state-of-the-art fixed-view approaches.
+            </p>
+        </div>
+
+        <div class="section-title">
+            <h2>Motivation & Approach</h2>
+        </div>
+
+        <div class="teaser">
+            <div class="teaser-content">
+                <h3>The Challenge: Fixed View Limitations</h3>
+                <p>Traditional robotic systems rely on static camera viewpoints, which often lead to:</p>
+                <ul>
+                    <li><strong>Occlusion issues</strong>: Critical objects or end-effectors hidden from view</li>
+                    <li><strong>Incomplete scene understanding</strong>: Limited spatial awareness</li>
+                    <li><strong>Task interference</strong>: Shared encoders struggle with diverse tasks</li>
+                    <li><strong>Reduced generalization</strong>: Poor performance on novel scenarios</li>
+                </ul>
+
+                <h3>Our Solution: Task-Aware View Planning</h3>
+                <p>TAVP introduces two key innovations:</p>
+                <ul>
+                    <li><strong>Multi-Viewpoint Exploration Policy (MVEP)</strong>: Actively selects optimal viewpoints to maximize information gain</li>
+                    <li><strong>Task-aware Mixture-of-Experts (TaskMoE)</strong>: Dynamically routes features to specialized experts based on task requirements</li>
+                </ul>
+            </div>
+
+            <div class="teaser-visual">
+                <img src="static/images/model/motivation.png" alt="Fixed View vs. TAVP Comparison">
+                <div class="visual-caption">
+                    <p>Fig. 1: <strong>Motivation Illustration.</strong> Observations captured from fixed cameras often miss parts of the target objects. For example, the front view only captures the cupboard (highlighted with a red circle), while the left and right shoulder views only show the sugar (already grasped by the end-effector and highlighted with green circles). These incomplete observations may lead to failed operations. In contrast, our proposed TAVP is designed to dynamically explore and re-render informative viewpoints that maximize coverage of target-relevant information, thereby improving the reliability of manipulation outcomes.</p>
+                    <!-- <p><strong>Fixed View Limitations:</strong> Observations from fixed cameras miss critical information - cupboard in front view, end-effector in shoulder views.</p>
+                    <p><strong>TAVP Solution:</strong> Dynamically explores viewpoints to capture both target object and end-effector simultaneously.</p> -->
+                </div>
+            </div>
+        </div>
+
+        <div class="problem-solution">
+            <div class="card">
+                <div class="card-header" style="background: #e74c3c;">
+                    Problem: Fixed Viewpoints
+                </div>
+                <div class="card-body">
+                    <ul>
+                        <li>Target objects often occluded</li>
+                        <li>End-effector visibility compromised</li>
+                        <li>Incomplete scene understanding</li>
+                        <li>Limited spatial awareness</li>
+                        <li>Failure in complex manipulation tasks</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header" style="background: #3498db;">
+                    Solution: MVEP
+                </div>
+                <div class="card-body">
+                    <ul>
+                        <li>Active viewpoint exploration</li>
+                        <li>Dynamic multi-view re-rendering</li>
+                        <li>Optimized camera positioning</li>
+                        <li>Enhanced 3D perception</li>
+                        <li>Occlusion minimization</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header" style="background: #9b59b6;">
+                    Solution: TaskMoE
+                </div>
+                <div class="card-body">
+                    <ul>
+                        <li>Task-specific feature extraction</li>
+                        <li>Dynamic expert routing</li>
+                        <li>Parameter sharing for similar tasks</li>
+                        <li>Reduced task interference</li>
+                        <li>Improved multi-task generalization</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section style="background: #f8fafc;">
+        <div class="section-title">
+            <h2>Methodology</h2>
+        </div>
+
+        <div class="framework">
+            <div class="framework-header">
+                TAVP Framework Overview
+            </div>
+            <div class="framework-image">
+                <img src="static/images/model/overview.png" alt="TAVP Framework Diagram">
+                <p style="margin-top: 1rem; text-align: left; color: #666;">Fig. 2: <strong>The overview of our Task-Aware View Planning (TAVP) framework.</strong> The input of this framework is four RGB-D images from fixed viewpoints. First, it converts them into point clouds and aggregates them into a global point cloud in the world coordinate system. Then, it diverges into two branches: One branch (orange) performs <strong>Coarse Grounding</strong> (a) to predict the approximate position of the end-effector. Subsequently, it moves the center of the global point cloud to this predicted position, performs scaling and cropping, retaining the important point cloud region. Another branch (green) receives the global point cloud, passes it through MVEP to predict the optimal camera parameters for the observation viewpoint. Then, using these parameters, it renders a 2D image from the point cloud processed by the red branch. This rendered image is fed into the <strong>Fine Grounding</strong> (b) to predict the final robot action, including the end-effector position, rotation, gripper status, and collision state.</p>
+            </div>
+            <div class="framework-steps">
+                <div class="step">
+                    <!-- <div class="step-number">1</div> -->
+                    <!-- <h3>Input Processing</h3> -->
+                    <p>Our proposed Task-Aware View Planning (TAVP) framework aims to identify optimal viewpoints for accurate and robust robotic manipulation, guided by task-specific visual feature extraction. TAVP takes as input a language instruction, the current visual observations from RGB-D cameras, and the current gripper state. To enable the model to explore the optimal observations from arbitrary viewpoints, we first reconstruct a 3D point cloud of the scene using the input RGB-D images. To narrow down the search space and enable task-aligned view selection, we leverage the coarse prediction stage from RVT-2 to generate an area of interest. However, unlike RVT-2, which extracts visual features for all tasks using a shared Multi-View Transformer (MVT), we introduce a Task-Aware Mixture-of-Experts (TaskMoE) module before MVT to route instructions to specialized expert encoders. This design enables more precise and task-aligned visual feature extraction, which benefits both viewpoint selection and action prediction. Starting from the identified area of interest, we employ a Multi-Viewpoint Exploration Policy Network (MVEPN) to search for optimal camera poses that maximize the visibility of the target object and the end-effector. The selected viewpoints are then re-rendered into image observations and processed using another TaskMoE-based MVT before being passed to the action prediction model. For action prediction, we also upgrade the autoregressive action sequence model proposed in ARP with our proposed TaskMoE to attain more task-specific feature extraction and action prediction.</p>
+                    <!-- <div class="point-cloud-container">
+                        <img src="https://via.placeholder.com/256x256/3498db/ffffff?text=Point+Cloud+GIF" alt="Point Cloud Visualization" class="point-cloud-gif">
+                    </div> -->
+                </div>
+
+                <!-- <div class="step">
+                    <div class="step-number">2</div>
+                    <h3>Coarse Grounding</h3>
+                    <p>Predicts approximate position of the end-effector to identify area of interest</p>
+                </div>
+
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <h3>View Planning (MVEP)</h3>
+                    <p>Reinforcement learning policy selects optimal camera viewpoints</p>
+                </div>
+
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <h3>Task-Specific Encoding (TaskMoE)</h3>
+                    <p>Mixture-of-experts routes features to specialized encoders based on task</p>
+                </div>
+
+                <div class="step">
+                    <div class="step-number">5</div>
+                    <h3>Action Prediction</h3>
+                    <p>Generates precise end-effector position, rotation, and gripper commands</p>
+                </div> -->
+            </div>
+        </div>
+
+        <div class="comparison">
+            <h3 style="text-align: center; margin-bottom: 1.5rem; color: var(--primary);">TaskMoE Architecture</h3>
+            <div style="display: flex; gap: 2rem; flex-wrap: wrap;">
+                <div style="flex: 1; min-width: 300px;">
+                    <h4 style="color: var(--secondary); margin-bottom: 1rem;">Key Innovations</h4>
+                    <ul>
+                        <li>Dynamic expert routing guided by fused instruction and scene cues</li>
+                        <li>Decoupled gating strategy (\( N_G \) gates for \(N_J\) tasks, \(N_G\) < \(N_J\))</li>
+                        <li>Parameter sharing for semantically similar tasks</li>
+                        <li>Top-k expert activation for efficiency</li>
+                    </ul>
+                    <!-- <div style="margin-top: 20px; background: #e3f2fd; padding: 15px; border-radius: 8px;">
+                        <h4 style="color: #1565c0;">TaskMoE Parameters</h4>
+                        
+                    </div> -->
+                </div>
+                <div style="flex: 1; min-width: 300px;">
+                    <img src="static/images/model/taskmoe.png" alt="TaskMoE Architecture" style="width: 100%; max-width: 700px;">
+                    <p style="margin-top: 1rem; text-align: center; color: #666;">Fig. 3: TaskMoE pipeline</p>
+                </div>
+                <div class="framework-steps">
+                    <div class="step">
+                        <p>
+                        To address the inherent heterogeneity of complex manipulation tasks in multi-task learning, where different tasks often require substantially distinct visual representations and action policies, we introduce a task-aware Mixture-of-Experts module (TaskMoE), as illustrated in right Fig. Our TaskMoE introduces two key innovations. First, instead of relying solely on task identifiers for expert selection, we incorporate richer instruction- and scene-related cues to guide expert routing more effectively, which is crucial for accurate multi-task robotic manipulation. Specifically, as shown in right Fig, we design a cross-modality module that employs a cross-attention mechanism to model the interaction between instruction and visual information. The resulting context-aware features are then fused with the task identifier via a Feature-wise Linear Modulation (FiLM) layer, enabling more adaptive and task-sensitive expert selection.
+                        </p>
+
+                        <p>
+                        Second, to improve the scalability and generalization of TaskMoE, we decouple the number of routing gates from the total number of tasks. Concretely, we allocate \( N_G \) gates for all \( N_J \) tasks, where \( N_G < N_J \). This design not only accommodates task diversity but also promotes parameter sharing among tasks with similar visual or semantic characteristics. For example, as illustrated in right Fig, <strong>Task 1</strong> and <strong>Task 2</strong> (both involving opening drawer) are routed through the same gate but directed to different experts based on their specific operation requirements. In contrast, <strong>Task 3</strong>, which is semantically dissimilar, is routed through a different gate. This setup encourages the discovery of latent task clusters and provides the capacity to generalize to unseen tasks that share structural similarities with seen ones, thereby enhancing the transferability and robustness of TaskMoE. Notably, all tasks share a common pool of \( N_E \) experts, and for each input, only the top-\( k \) experts (based on gating scores) are activated to guide task-specific visual feature extraction.
+                        </p>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="section-title">
+            <h2>Experimental Results</h2>
+        </div>
+<!-- 
+        <div class="results">
+            <div class="result-card">
+                <div class="result-title">Performance on RLBench Tasks</div>
+                <div class="result-content">
+                    <table>
+                        <tr>
+                            <th>Method</th>
+                            <th>Avg. Success (%)</th>
+                            <th>Inference Time (s)</th>
+                        </tr>
+                        <tr>
+                            <td>RVT2</td>
+                            <td>81.7</td>
+                            <td>0.352</td>
+                        </tr>
+                        <tr>
+                            <td>ARP</td>
+                            <td>83.9</td>
+                            <td>0.371</td>
+                        </tr>
+                        <tr>
+                            <td>ARP+</td>
+                            <td>84.9</td>
+                            <td>0.394</td>
+                        </tr>
+                        <tr style="background-color: #e3f2fd; font-weight: bold;">
+                            <td>TAVP (Ours)</td>
+                            <td>86.7</td>
+                            <td>0.436</td>
+                        </tr>
+                    </table>
+                    <p style="margin-top: 1rem; text-align: center;">Superior performance with minimal latency increase</p>
+                </div>
+            </div>
+
+            <div class="result-card">
+                <div class="result-title">Per-Task Improvements</div>
+                <div class="result-content">
+                    <table>
+                        <tr>
+                            <th>Task</th>
+                            <th>TAVP</th>
+                            <th>Improvement</th>
+                        </tr>
+                        <tr>
+                            <td>Put in Cupboard</td>
+                            <td>76.0%</td>
+                            <td>+6.4%</td>
+                        </tr>
+                        <tr>
+                            <td>Put in Drawer</td>
+                            <td>100.0%</td>
+                            <td>+1.6%</td>
+                        </tr>
+                        <tr>
+                            <td>Slide Block</td>
+                            <td>100.0%</td>
+                            <td>+7.2%</td>
+                        </tr>
+                        <tr>
+                            <td>Sort Shape</td>
+                            <td>64.0%</td>
+                            <td>+17.6%</td>
+                        </tr>
+                        <tr>
+                            <td>Stack Cups</td>
+                            <td>60.0%</td>
+                            <td>-20.0%</td>
+                        </tr>
+                    </table>
+                    <p style="margin-top: 1rem; text-align: center;">Significant gains in occlusion-prone tasks</p>
+                </div>
+            </div>
+
+            <div class="result-card">
+                <div class="result-title">Ablation Study</div>
+                <div class="result-content">
+                    <table>
+                        <tr>
+                            <th>Configuration</th>
+                            <th>Success Rate</th>
+                        </tr>
+                        <tr>
+                            <td>Full TAVP</td>
+                            <td>86.67%</td>
+                        </tr>
+                        <tr>
+                            <td>w/o TaskMoE</td>
+                            <td>85.56%</td>
+                        </tr>
+                        <tr>
+                            <td>w/o Active Exploration</td>
+                            <td>8.89%</td>
+                        </tr>
+                        <tr>
+                            <td>Fixed Viewpoints</td>
+                            <td>84.90%</td>
+                        </tr>
+                    </table>
+                    <p style="margin-top: 1rem; text-align: center;">Both components essential for performance</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="comparison">
+            <h3 style="text-align: center; margin-bottom: 1.5rem; color: var(--primary);">Real-World Performance</h3>
+            <div class="comparison-grid">
+                <div class="comparison-item">
+                    <h4>Boil Water</h4>
+                    <div class="comparison-value">92%</div>
+                    <p>Success Rate</p>
+                </div>
+
+                <div class="comparison-item">
+                    <h4>Cover Lid</h4>
+                    <div class="comparison-value">88%</div>
+                    <p>Success Rate</p>
+                </div>
+
+                <div class="comparison-item">
+                    <h4>Pick Grape</h4>
+                    <div class="comparison-value">85%</div>
+                    <p>Success Rate</p>
+                </div>
+
+                <div class="comparison-item">
+                    <h4>Press Button</h4>
+                    <div class="comparison-value">94%</div>
+                    <p>Success Rate</p>
+                </div>
+            </div>
+        </div> -->
+
+        <!-- Real-world Video Gallery -->
+        <div class="media-gallery">
+            <h3 class="gallery-header">Real-World Video Demonstrations</h3>
+            <div class="media-item">
+                <video controls poster="https://via.placeholder.com/1200x400/3498db/ffffff?text=Video+1" loop>
+                    <source src="static/videos/Dobot_video264/boil_water_converted.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <div class="media-caption">Boiling Water Task: The scene contains a pink bowl, a white bowl, a green plate, and background objects. The robot must stack both bowls onto the green plate to tidy the table.</div>
+            </div>
+            <div class="media-item">
+                <video controls poster="https://via.placeholder.com/1200x400/3498db/ffffff?text=Video+2" loop>
+                    <source src="static/videos/Dobot_video264/cover_lid_converted.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <div class="media-caption">Cover Lid Manipulation: The scene contains a pressure cooker and its lid with background objects. The robot must pick up the lid and place it onto the pot to cover it.</div>
+            </div>
+            <div class="media-item">
+                <video controls poster="https://via.placeholder.com/1200x400/3498db/ffffff?text=Video+3" loop>
+                    <source src="static/videos/Dobot_video264/pick_grape_converted.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <div class="media-caption">Grape Picking: The scene contains a green plate and a bunch of grapes with background objects. The robot must retrieve grapes from behind a white basket and place them onto the green plate.</div>
+            </div>
+            <div class="media-item">
+                <video controls poster="https://via.placeholder.com/1200x400/3498db/ffffff?text=Video+4" loop>
+                    <source src="static/videos/Dobot_video264/press_button_converted.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <div class="media-caption">Button Pressing: The scene contains a microwave with background objects. The robot must press one of the buttons on the microwave.</div>
+            </div>
+            <div class="media-item">
+                <video controls poster="https://via.placeholder.com/1200x400/3498db/ffffff?text=Video+5" loop>
+                    <source src="static/videos/Dobot_video264/arrange_tableware_converted.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <div class="media-caption">Long-horizon Manipulation: The scene contains a pink bowl, a white bowl, a green plate, and background objects. The robot must stack both bowls onto the green plate to tidy the table.</div>
+            </div>
+        </div>
+
+        <!-- Simulation Task Videos -->
+        <div class="simulation-grid">
+            <h3 class="simulation-header">Simulation Task Demonstrations</h3>
+            <!-- 18 simulation videos -->
+            <div class="simulation-item">
+                <video controls loop>
+                    <source src="static/videos/RLBench_video264/close_jar(close the red jar)_converted.mp4" type="video/mp4">
+                </video>
+                <p class="video-name">Close the red jar</p>
+            </div>
+            <div class="simulation-item">
+                <video controls loop>
+                    <source src="static/videos/RLBench_video264/insert_onto_square_peg(put the ring on the black spoke)_converted.mp4" type="video/mp4">
+                </video>
+                <p class="video-name">Put the ring on the black spoke</p>
+            </div>
+            <div class="simulation-item">
+                <video controls>
+                    <source src="static/videos/RLBench_video264/light_bulb_in(screw in the silver light bulb)_converted.mp4" type="video/mp4">
+                </video>
+                <p class="video-name">Screw in the silver light bulb</p>
+            </div>
+            <div class="simulation-item">
+                <video controls>
+                    <source src="static/videos/RLBench_video264/meat_off_grill(take the steak off the grill)_converted.mp4" type="video/mp4">
+                </video>
+                <p class="video-name">Take the steak off the grill</p>
+            </div>
+            <div class="simulation-item">
+                <video controls>
+                    <source src="static/videos/RLBench_video264/open_drawer(open the top drawer)_converted.mp4" type="video/mp4">
+                </video>
+                <p class="video-name">Open the top drawer</p>
+            </div>
+            <div class="simulation-item">
+                <video controls>
+                    <source src="static/videos/RLBench_video264/place_cups(place 2 cups on the cup holder)_converted.mp4" type="video/mp4">
+                </video>
+                <p class="video-name">Place 2 cups on the cup holder</p>
+            </div>
+            <div class="simulation-item">
+                <video controls>
+                    <source src="static/videos/RLBench_video264/place_shape_in_shape_sorter(put the star in the shape sorter)_converted.mp4" type="video/mp4">
+                </video>
+                <p class="video-name">Put the star in the shape sorter</p>
+            </div>
+            <div class="simulation-item">
+                <video controls>
+                    <source src="static/videos/RLBench_video264/place_wine_at_rack_location(stack the wine bottle to the left of the rack)_converted.mp4" type="video/mp4">
+                </video>
+                <p class="video-name">Stack the wine bottle to the left of the rack</p>
+            </div>
+            <div class="simulation-item">
+                <video controls>
+                    <source src="static/videos/RLBench_video264/push_buttons(push the maroon button)_converted.mp4" type="video/mp4">
+                </video>
+                <p class="video-name">Push the maroon button</p>
+            </div>
+            <div class="simulation-item">
+                <video controls>
+                    <source src="static/videos/RLBench_video264/put_groceries_in_cupboard(put the coffee in the cupboard)_converted.mp4" type="video/mp4">
+                </video>
+                <p class="video-name">Put the coffee in the cupboard</p>
+            </div>
+            <div class="simulation-item">
+                <video controls>
+                    <source src="static/videos/RLBench_video264/put_item_in_drawer(put the item in the top drawer)_converted.mp4" type="video/mp4">
+                </video>
+                <p class="video-name">Put the item in the top drawer</p>
+            </div>
+            <div class="simulation-item">
+                <video controls>
+                    <source src="static/videos/RLBench_video264/put_money_in_safe(put the money away in the safe on the top shelf)_converted.mp4" type="video/mp4">
+                </video>
+                <p class="video-name">Put the money away in the safe on the top shelf</p>
+            </div>
+            <div class="simulation-item">
+                <video controls>
+                    <source src="static/videos/RLBench_video264/reach_and_drag(use the stick to drag the cube onto the navy target)_converted.mp4" type="video/mp4">
+                </video>
+                <p class="video-name">Use the stick to drag the cube onto the navy target</p>
+            </div>
+            <div class="simulation-item">
+                <video controls>
+                    <source src="static/videos/RLBench_video264/slide_block_to_color_target(slide the block to pink target)_converted.mp4" type="video/mp4">
+                </video>
+                <p class="video-name">Slide the block to pink target</p>
+            </div>
+            <div class="simulation-item">
+                <video controls>
+                    <source src="static/videos/RLBench_video264/stack_blocks(stack 2 maroon blocks)_converted.mp4" type="video/mp4">
+                </video>
+                <p class="video-name">Stack 2 maroon blocks</p>
+            </div>
+            <div class="simulation-item">
+                <video controls>
+                    <source src="static/videos/RLBench_video264/stack_cups(stack the other cups on top of the maroon cup)_converted.mp4" type="video/mp4">
+                </video>
+                <p class="video-name">Stack the other cups on top of the maroon cup</p>
+            </div>
+            <div class="simulation-item">
+                <video controls>
+                    <source src="static/videos/RLBench_video264/sweep_to_dustpan_of_size(sweep dirt to the short dustpan)_converted.mp4" type="video/mp4">
+                </video>
+                <p class="video-name">Sweep dirt to the short dustpan</p>
+            </div>
+            <div class="simulation-item">
+                <video controls>
+                    <source src="static/videos/RLBench_video264/turn_tap(turn right tap)_converted.mp4" type="video/mp4">
+                </video>
+                <p class="video-name">Turn right tap</p>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="conclusion">
+            <div class="conclusion-content">
+                <h2>Conclusion</h2>
+                <p style="font-size: 1.2rem; max-width: 800px; margin: 0 auto;">
+                    TAVP establishes that dynamic view planning and task-aware representation learning significantly advance robotic manipulation capabilities. The MVEP module's viewpoint optimization effectively overcomes occlusion limitations in fixed-viewpoint systems, while TaskMoE's specialized feature extraction mitigates multi-task interference. These innovations collectively enhance performance across diverse manipulation challenges and enable meaningful generalization to novel tasks.
+                </p>
+            </div>
+        </div>
+
+        <!-- <div style="text-align: center; margin-top: 3rem;">
+            <h3 style="color: var(--primary); margin-bottom: 1.5rem;">Future Work</h3>
+            <div style="display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap;">
+                <div style="background: white; padding: 1.5rem; border-radius: 8px; box-shadow: var(--shadow); max-width: 250px;">
+                    <i class="fas fa-robot" style="font-size: 2rem; color: var(--secondary); margin-bottom: 1rem;"></i>
+                    <h4>Multi-Sensor Integration</h4>
+                    <p>Incorporating tactile and force feedback</p>
+                </div>
+
+                <div style="background: white; padding: 1.5rem; border-radius: 8px; box-shadow: var(--shadow); max-width: 250px;">
+                    <i class="fas fa-sync-alt" style="font-size: 2rem; color: var(--secondary); margin-bottom: 1rem;"></i>
+                    <h4>Domain Adaptation</h4>
+                    <p>Improving robustness to real-world variations</p>
+                </div>
+
+                <div style="background: white; padding: 1.5rem; border-radius: 8px; box-shadow: var(--shadow); max-width: 250px;">
+                    <i class="fas fa-expand" style="font-size: 2rem; color: var(--secondary); margin-bottom: 1rem;"></i>
+                    <h4>Broader Applications</h4>
+                    <p>Extending to mobile manipulation and beyond</p>
+                </div>
+            </div>
+        </div> -->
+    </section>
+
+    <section>
+        <div class="section-title">
+            <h2>BibTeX</h2>
+        </div>
+
+        <div class="bibtex">
+            @inproceedings{bai2025learning,
+            title     = {Learning to See and Act: Task-Aware View Planning for Robotic Manipulation},
+            author    = {Bai, Yongjie and Wang, Zhouxia and Liu, Yang and Chen, Weixing and Chen, Ziliang and Dai, Mingtong and Zheng, Yongsen and Liu, Lingbo and Li, Guanbin and Lin, Liang},
+            booktitle = {arxiv.org},
+            year      = {2025}
+            }
+        </div>
+        <!-- <div class="container is-max-desktop content">
+            <h2 class="title">BibTeX</h2>
+            <pre><code>@inproceedings{song2024towards,
+                                    title={Towards long-horizon vision-language navigation: Platform, benchmark and method},
+                                    author={Song, Xinshuai and Chen, Weixing and Liu, Yang and Chen, Weikai and Li, Guanbin and Lin, Liang},
+                                    booktitle={Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition},
+                                    year={2025}
+                                    }</code></pre>
+            </div> -->
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">TAVP</div>
+            <p>Task-Aware View Planning for Robotic Manipulation</p>
+
+            <div class="footer-links">
+                <a href="https://hcplab-sysu.github.io/TAVP"><i class="fas fa-home"></i> Project Home</a>
+                <a href="https://arxiv.org/pdf/"><i class="fas fa-file-pdf"></i> Paper</a>
+                <a href="https://github.com/baiyu858/TAVP"><i class="fas fa-code"></i> GitHub</a>
+                <!-- <a href="#"><i class="fas fa-envelope"></i> Contact</a>
+                <a href="#"><i class="fas fa-database"></i> Dataset</a> -->
+            </div>
+
+            <!-- <div class="copyright">
+                &copy; 2024 Learning to See and Act: Task-Aware View Planning for Robotic Manipulation. All rights reserved.
+            </div> -->
+        </div>
+    </footer>
+    <!-- <script>
+        // 获取所有视频卡片
+        const mediaItems = document.querySelectorAll('.media-item');
+        
+        mediaItems.forEach(item => {
+            // 找到每个卡片中的视频元素
+            const video = item.querySelector('video');
+            
+            // 鼠标悬停时播放视频
+            item.addEventListener('mouseenter', () => {
+                // 检查视频是否已加载元数据
+                if (video.readyState >= 1) {
+                    video.play();
+                } else {
+                    // 如果未加载，加载后再播放
+                    video.addEventListener('loadedmetadata', () => {
+                        video.play();
+                    }, { once: true });
+                }
+            });
+            
+            // 鼠标离开时暂停视频
+            item.addEventListener('mouseleave', () => {
+                video.pause();
+            });
+        });
+    </script> -->
+    <script>
+        // 获取所有视频元素
+        const videos = document.querySelectorAll('.media-item video');
+        
+        // 页面加载完成后确保视频播放
+        document.addEventListener('DOMContentLoaded', () => {
+            videos.forEach(video => {
+                video.loop=true;
+                // 处理可能的自动播放限制
+                video.play().catch(error => {
+                    console.log('自动播放受浏览器限制，尝试用户交互后播放:', error);
+                    
+                    // 当用户点击页面任意位置时播放视频
+                    document.body.addEventListener('click', () => {
+                        video.play();
+                    }, { once: true });
+                });
+            });
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const simVideos = document.querySelectorAll('.simulation-item video');
+            
+            simVideos.forEach(video => {
+                // 尝试自动播放
+                video.loop=true;
+                video.play().catch(error => {
+                    console.log('模拟视频自动播放受限:', error);
+                    
+                    // 当用户点击页面时尝试播放
+                    document.body.addEventListener('click', () => {
+                        video.play();
+                    }, { once: true });
+                });
+            });
+        });
+    </script>
+</body>
+</html>
