@@ -89,6 +89,14 @@
             position: relative;
         }
 
+        .authors .author a {
+            color: white;          /* 文字颜色设为白色 */
+            text-decoration: none; /* 去掉下划线 */
+        }
+        .authors .author a:hover {
+            text-decoration: underline; /* 鼠标悬停时才加下划线（可选）*/
+        }
+
         .author sup {
             font-size: 0.7rem;
             vertical-align: super;
@@ -731,16 +739,16 @@
             <h1>Learning to See and Act: Task-Aware View Planning for Robotic Manipulation</h1>
 
             <div class="authors">
-                <div class="author">Yongjie Bai<sup>1,2</sup><sup>*</sup></div>
-                <div class="author">Zhouxia Wang<sup>3</sup><sup>*</sup></div>
-                <div class="author">Yang Liu<sup>1</sup><sup>†</sup></div>
-                <div class="author">Weixing Chen<sup>1</sup></div>
-                <div class="author">Ziliang Chen<sup>2</sup></div>
-                <div class="author">Mingtong Dai<sup>2,4</sup></div>
-                <div class="author">Yongsen Zheng<sup>3</sup></div>
-                <div class="author">Lingbo Liu<sup>2</sup></div>
-                <div class="author">Guanbin Li<sup>1,2</sup></div>
-                <div class="author">Liang Lin<sup>1,2</sup></div>
+                <div class="author"><a href="https://scholar.google.com/citations?user=W_YDucAAAAAJ&hl=zh-CN" target="_blank">Yongjie Bai</a><sup>1,2</sup><sup>*</sup></div>
+                <div class="author"><a href="https://wzhouxiff.github.io/" target="_blank">Zhouxia Wang</a><sup>3</sup><sup>*</sup></div>
+                <div class="author"><a href="https://yangliu9208.github.io/" target="_blank">Yang Liu</a><sup>1</sup><sup>†</sup></div>
+                <div class="author"><a href="https://wissingchen.github.io/" target="_blank">Weixing Chen</a><sup>1</sup></div>
+                <div class="author"><a href="https://scholar.google.com/citations?user=RC-LN4QAAAAJ&hl=en" target="_blank">Ziliang Chen</a><sup>2</sup></div>
+                <div class="author"><a href="https://github.com/CCCalcifer/" target="_blank">Mingtong Dai</a><sup>2,4</sup></div>
+                <div class="author"><a href="https://zysensmile.github.io/" target="_blank">Yongsen Zheng</a><sup>3</sup></div>
+                <div class="author"><a href="https://lingboliu.com/" target="_blank">Lingbo Liu</a><sup>2</sup></div>
+                <div class="author"><a href="https://guanbinli.com/" target="_blank">Guanbin Li</a><sup>1,2</sup></div>
+                <div class="author"><a href="http://www.linliang.net/" target="_blank">Liang Lin</a><sup>1,2</sup></div>
             </div>
 
             <div class="author-notes">
@@ -809,8 +817,8 @@
 
         <div class="teaser">
             <div class="teaser-content">
-                <h3>The Challenge: Fixed View Limitations</h3>
-                <p>Traditional robotic systems rely on static camera viewpoints, which often lead to:</p>
+                <h3>The Challenge: Fixed View Limitations & Dense Encoders Limitations</h3>
+                <p>Traditional robotic systems rely on static camera viewpoints and shared visual encoders, which often lead to:</p>
                 <ul>
                     <li><strong>Occlusion issues</strong>: Critical objects or end-effectors hidden from view</li>
                     <li><strong>Incomplete scene understanding</strong>: Limited spatial awareness</li>
@@ -847,7 +855,7 @@
                         <li>End-effector visibility compromised</li>
                         <li>Incomplete scene understanding</li>
                         <li>Limited spatial awareness</li>
-                        <li>Failure in complex manipulation tasks</li>
+                        <!-- <li>Failure in complex manipulation tasks</li> -->
                     </ul>
                 </div>
             </div>
@@ -895,7 +903,7 @@
             </div>
             <div class="framework-image">
                 <img src="static/images/model/overview.png" alt="TAVP Framework Diagram">
-                <p style="margin-top: 1rem; text-align: left; color: #666;">Fig. 2: <strong>The overview of our Task-Aware View Planning (TAVP) framework.</strong> The input of this framework is four RGB-D images from fixed viewpoints. First, it converts them into point clouds and aggregates them into a global point cloud in the world coordinate system. Then, it diverges into two branches: One branch (orange) performs <strong>Coarse Grounding</strong> (a) to predict the approximate position of the end-effector. Subsequently, it moves the center of the global point cloud to this predicted position, performs scaling and cropping, retaining the important point cloud region. Another branch (green) receives the global point cloud, passes it through MVEP to predict the optimal camera parameters for the observation viewpoint. Then, using these parameters, it renders a 2D image from the point cloud processed by the red branch. This rendered image is fed into the <strong>Fine Grounding</strong> (b) to predict the final robot action, including the end-effector position, rotation, gripper status, and collision state.</p>
+                <p style="margin-top: 1rem; text-align: left; color: #666;">Fig. 2: <strong>The overview of our Task-Aware View Planning (TAVP) framework.</strong> The input of this framework is four RGB-D images from fixed viewpoints. First, it converts them into point clouds and aggregates them into a global point cloud in the world coordinate system. Then, it diverges into two branches: One branch (orange) performs <strong>Coarse Grounding</strong> to predict the approximate position of the end-effector. Subsequently, it moves the center of the global point cloud to this predicted position, performs scaling and cropping, retaining the important point cloud region. Another branch (green) receives the global point cloud, passes it through MVEP to predict the optimal camera parameters for the observation viewpoint. Then, using these parameters, it renders a 2D image from the point cloud processed by the red branch. This rendered image is fed into the <strong>Fine Grounding</strong> to predict the final robot action, including the end-effector position, rotation, gripper status, and collision state.</p>
             </div>
             <div class="framework-steps">
                 <div class="step">
@@ -1115,35 +1123,35 @@
                     <source src="static/videos/Dobot_video264/boil_water_converted.mp4" type="video/mp4">
                     Your browser does not support the video tag.
                 </video>
-                <div class="media-caption">Boiling Water Task: The scene contains a pink bowl, a white bowl, a green plate, and background objects. The robot must stack both bowls onto the green plate to tidy the table.</div>
+                <div class="media-caption">Boiling Water Task: The scene contains a microwave and a kettle with background objects. The robot must place the kettle on top of the microwave to boil water.</div>
             </div>
             <div class="media-item">
                 <video controls poster="https://via.placeholder.com/1200x400/3498db/ffffff?text=Video+2" loop>
                     <source src="static/videos/Dobot_video264/cover_lid_converted.mp4" type="video/mp4">
                     Your browser does not support the video tag.
                 </video>
-                <div class="media-caption">Cover Lid Manipulation: The scene contains a pressure cooker and its lid with background objects. The robot must pick up the lid and place it onto the pot to cover it.</div>
+                <div class="media-caption">Cover Lid Task: The scene contains a pressure cooker and its lid with background objects. The robot must pick up the lid and place it onto the pot to cover it.</div>
             </div>
             <div class="media-item">
                 <video controls poster="https://via.placeholder.com/1200x400/3498db/ffffff?text=Video+3" loop>
                     <source src="static/videos/Dobot_video264/pick_grape_converted.mp4" type="video/mp4">
                     Your browser does not support the video tag.
                 </video>
-                <div class="media-caption">Grape Picking: The scene contains a green plate and a bunch of grapes with background objects. The robot must retrieve grapes from behind a white basket and place them onto the green plate.</div>
+                <div class="media-caption">Grape Picking Task: The scene contains a green plate and a bunch of grapes with background objects. The robot must retrieve grapes from behind a white basket and place them onto the green plate.</div>
             </div>
             <div class="media-item">
                 <video controls poster="https://via.placeholder.com/1200x400/3498db/ffffff?text=Video+4" loop>
                     <source src="static/videos/Dobot_video264/press_button_converted.mp4" type="video/mp4">
                     Your browser does not support the video tag.
                 </video>
-                <div class="media-caption">Button Pressing: The scene contains a microwave with background objects. The robot must press one of the buttons on the microwave.</div>
+                <div class="media-caption">Button Pressing Task: The scene contains a microwave with background objects. The robot must press one of the buttons on the microwave.</div>
             </div>
             <div class="media-item">
                 <video controls poster="https://via.placeholder.com/1200x400/3498db/ffffff?text=Video+5" loop>
                     <source src="static/videos/Dobot_video264/arrange_tableware_converted.mp4" type="video/mp4">
                     Your browser does not support the video tag.
                 </video>
-                <div class="media-caption">Long-horizon Manipulation: The scene contains a pink bowl, a white bowl, a green plate, and background objects. The robot must stack both bowls onto the green plate to tidy the table.</div>
+                <div class="media-caption">Long-horizon Manipulation Task: The scene contains a pink bowl, a white bowl, a green plate, and background objects. The robot must stack both bowls onto the green plate to tidy the table.</div>
             </div>
         </div>
 
@@ -1330,7 +1338,7 @@
 
             <div class="footer-links">
                 <a href="https://hcplab-sysu.github.io/TAVP"><i class="fas fa-home"></i> Project Home</a>
-                <a href="https://arxiv.org/pdf/"><i class="fas fa-file-pdf"></i> Paper</a>
+                <a href="https://arxiv.org/pdf/2508.05186"><i class="fas fa-file-pdf"></i> Paper</a>
                 <a href="https://github.com/HCPLab-SYSU/TAVP"><i class="fas fa-code"></i> GitHub</a>
                 <!-- <a href="#"><i class="fas fa-envelope"></i> Contact</a>
                 <a href="#"><i class="fas fa-database"></i> Dataset</a> -->
