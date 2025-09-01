@@ -33,7 +33,7 @@
 </div>
 <br>
 
-<img src="static/images/model/overview.png" alt="TAVP Framework Diagram">
+<img src="static/images/model/overview_v1.png" alt="TAVP Framework Diagram">
 
 <strong>TAVP</strong> employs an efficient exploration policy (MVEP), accelerated by a novel pseudo-environment, to actively acquire informative views. Furthermore, we introduce a Task-aware Mixture-of-Experts (TaskMoE) visual encoder to disentangle features across different tasks, boosting both representation fidelity and task generalization. By learning to see the world in a task-aware way, TAVP generates more complete and discriminative visual representations, demonstrating significantly enhanced action prediction across a wide array of manipulation challenges.
 
@@ -41,10 +41,8 @@
 ---
 
 
-
 ## TODO LIST
-- [ ] Show the experimental 
-results on the Robocasa Benchmark
+- [ ] Show more of the experimental results on the simulation benchmark
 
 - [ ] Show more experimental results on real world robots
 
