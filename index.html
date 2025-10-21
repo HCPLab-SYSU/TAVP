@@ -227,6 +227,21 @@
             color: #444;
         }
 
+        .item01 {
+            background: white;
+            border-radius: 10px;
+            padding: 2.5rem;
+            box-shadow: var(--shadow);
+            margin-bottom: 3rem;
+            text-align: left;
+        }
+
+        .item01 p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #444;
+        }
+
         .highlight {
             background: rgba(52, 152, 219, 0.1);
             border-left: 4px solid var(--secondary);
@@ -336,6 +351,7 @@
             text-align: center;
             background: #f9f9f9;
             font-size: 1.0rem;
+            line-height: 0.8;
         }
 
         .framework-image img {
@@ -590,6 +606,8 @@
             text-align: center;
             margin-bottom: 20px;
             color: var(--primary);
+            font-size: 28px;
+            line-height: 1.0;
         }
 
         .media-item {
@@ -902,7 +920,7 @@
                 TAVP Framework Overview
             </div>
             <div class="framework-image">
-                <img src="static/images/model/overview.png" alt="TAVP Framework Diagram">
+                <img src="static/images/model/overview_v1.png" alt="TAVP Framework Diagram">
                 <p style="margin-top: 1rem; text-align: left; color: #666;">Fig. 2: <strong>The overview of our Task-Aware View Planning (TAVP) framework.</strong> The input of this framework is four RGB-D images from fixed viewpoints. First, it converts them into point clouds and aggregates them into a global point cloud in the world coordinate system. Then, it diverges into two branches: One branch (orange) performs <strong>Coarse Grounding</strong> to predict the approximate position of the end-effector. Subsequently, it moves the center of the global point cloud to this predicted position, performs scaling and cropping, retaining the important point cloud region. Another branch (green) receives the global point cloud, passes it through MVEP to predict the optimal camera parameters for the observation viewpoint. Then, using these parameters, it renders a 2D image from the point cloud processed by the red branch. This rendered image is fed into the <strong>Fine Grounding</strong> to predict the final robot action, including the end-effector position, rotation, gripper status, and collision state.</p>
             </div>
             <div class="framework-steps">
@@ -1039,181 +1057,166 @@
 
     <section>
         <div class="section-title">
-            <h2>Experimental Results</h2>
+            <h2>Experiment</h2>
         </div>
-<!-- 
-        <div class="results">
-            <div class="result-card">
-                <div class="result-title">Performance on RLBench Tasks</div>
-                <div class="result-content">
-                    <table>
-                        <tr>
-                            <th>Method</th>
-                            <th>Avg. Success (%)</th>
-                            <th>Inference Time (s)</th>
-                        </tr>
-                        <tr>
-                            <td>RVT2</td>
-                            <td>81.7</td>
-                            <td>0.352</td>
-                        </tr>
-                        <tr>
-                            <td>ARP</td>
-                            <td>83.9</td>
-                            <td>0.371</td>
-                        </tr>
-                        <tr>
-                            <td>ARP+</td>
-                            <td>84.9</td>
-                            <td>0.394</td>
-                        </tr>
-                        <tr style="background-color: #e3f2fd; font-weight: bold;">
-                            <td>TAVP (Ours)</td>
-                            <td>86.7</td>
-                            <td>0.436</td>
-                        </tr>
-                    </table>
-                    <p style="margin-top: 1rem; text-align: center;">Superior performance with minimal latency increase</p>
-                </div>
-            </div>
-
-            <div class="result-card">
-                <div class="result-title">Per-Task Improvements</div>
-                <div class="result-content">
-                    <table>
-                        <tr>
-                            <th>Task</th>
-                            <th>TAVP</th>
-                            <th>Improvement</th>
-                        </tr>
-                        <tr>
-                            <td>Put in Cupboard</td>
-                            <td>76.0%</td>
-                            <td>+6.4%</td>
-                        </tr>
-                        <tr>
-                            <td>Put in Drawer</td>
-                            <td>100.0%</td>
-                            <td>+1.6%</td>
-                        </tr>
-                        <tr>
-                            <td>Slide Block</td>
-                            <td>100.0%</td>
-                            <td>+7.2%</td>
-                        </tr>
-                        <tr>
-                            <td>Sort Shape</td>
-                            <td>64.0%</td>
-                            <td>+17.6%</td>
-                        </tr>
-                        <tr>
-                            <td>Stack Cups</td>
-                            <td>60.0%</td>
-                            <td>-20.0%</td>
-                        </tr>
-                    </table>
-                    <p style="margin-top: 1rem; text-align: center;">Significant gains in occlusion-prone tasks</p>
-                </div>
-            </div>
-
-            <div class="result-card">
-                <div class="result-title">Ablation Study</div>
-                <div class="result-content">
-                    <table>
-                        <tr>
-                            <th>Configuration</th>
-                            <th>Success Rate</th>
-                        </tr>
-                        <tr>
-                            <td>Full TAVP</td>
-                            <td>86.67%</td>
-                        </tr>
-                        <tr>
-                            <td>w/o TaskMoE</td>
-                            <td>85.56%</td>
-                        </tr>
-                        <tr>
-                            <td>w/o Active Exploration</td>
-                            <td>8.89%</td>
-                        </tr>
-                        <tr>
-                            <td>Fixed Viewpoints</td>
-                            <td>84.90%</td>
-                        </tr>
-                    </table>
-                    <p style="margin-top: 1rem; text-align: center;">Both components essential for performance</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="comparison">
-            <h3 style="text-align: center; margin-bottom: 1.5rem; color: var(--primary);">Real-World Performance</h3>
-            <div class="comparison-grid">
-                <div class="comparison-item">
-                    <h4>Boil Water</h4>
-                    <div class="comparison-value">92%</div>
-                    <p>Success Rate</p>
-                </div>
-
-                <div class="comparison-item">
-                    <h4>Cover Lid</h4>
-                    <div class="comparison-value">88%</div>
-                    <p>Success Rate</p>
-                </div>
-
-                <div class="comparison-item">
-                    <h4>Pick Grape</h4>
-                    <div class="comparison-value">85%</div>
-                    <p>Success Rate</p>
-                </div>
-
-                <div class="comparison-item">
-                    <h4>Press Button</h4>
-                    <div class="comparison-value">94%</div>
-                    <p>Success Rate</p>
-                </div>
-            </div>
-        </div> -->
 
         <!-- Real-world Video Gallery -->
         <div class="media-gallery">
-            <h3 class="gallery-header">Real-World Video Demonstrations</h3>
+            <h3 class="gallery-header">Real-World Evaluation Video Demonstrations</h3>
+
+            <div class="abstract">
+                <p>
+                    We trained and deployed our TAVP on real-world manipulation tasks, and conducted analyses of both successful and failed cases. Below are the demonstration videos.
+                </p>
+            </div>
             <div class="media-item">
                 <video controls poster="https://via.placeholder.com/1200x400/3498db/ffffff?text=Video+1" loop>
-                    <source src="static/videos/Dobot_video264/boil_water_converted.mp4" type="video/mp4">
+                    <source src="static/videos/Dobot_video264/collect_fruits_evaluation_video_converted.mp4" type="video/mp4">
                     Your browser does not support the video tag.
                 </video>
-                <div class="media-caption">Boiling Water Task: The scene contains a microwave and a kettle with background objects. The robot must place the kettle on top of the microwave to boil water.</div>
+                <div class="media-caption">Collect Fruits Task: There are various fruits on the desktop. The robot needs to grab the corresponding fruits. Language instruction: "Put a carrot, a carambola, and an eggplant into the white basin."</div>
             </div>
+            
             <div class="media-item">
-                <video controls poster="https://via.placeholder.com/1200x400/3498db/ffffff?text=Video+2" loop>
-                    <source src="static/videos/Dobot_video264/cover_lid_converted.mp4" type="video/mp4">
+                <video controls poster="https://via.placeholder.com/1200x400/3498db/ffffff?text=Video+1" loop>
+                    <source src="static/videos/Dobot_video264/stack_bowls_evaluation_video_converted.mp4" type="video/mp4">
                     Your browser does not support the video tag.
                 </video>
-                <div class="media-caption">Cover Lid Task: The scene contains a pressure cooker and its lid with background objects. The robot must pick up the lid and place it onto the pot to cover it.</div>
+                <div class="media-caption">Stack Bowls Task: The scene contains a stack of bowls with background objects. The robot must pick up the bowls and stack them in a specific order. Language instruction: "Stack the blue bowl on top of the red bowl."</div>
             </div>
+
             <div class="media-item">
-                <video controls poster="https://via.placeholder.com/1200x400/3498db/ffffff?text=Video+3" loop>
-                    <source src="static/videos/Dobot_video264/pick_grape_converted.mp4" type="video/mp4">
+                <video controls poster="https://via.placeholder.com/1200x400/3498db/ffffff?text=Video+1" loop>
+                    <source src="static/videos/Dobot_video264/pick_grape_evaluation_video_converted.mp4" type="video/mp4">
                     Your browser does not support the video tag.
                 </video>
-                <div class="media-caption">Grape Picking Task: The scene contains a green plate and a bunch of grapes with background objects. The robot must retrieve grapes from behind a white basket and place them onto the green plate.</div>
+                <div class="media-caption">Grape Picking Task: There are plates and grapes in the scene. Language instruction: "Put the grapes into the green plate."</div>
             </div>
+
+            <!-- 依次按下按钮,绿、蓝、黄、红 -->
             <div class="media-item">
-                <video controls poster="https://via.placeholder.com/1200x400/3498db/ffffff?text=Video+4" loop>
-                    <source src="static/videos/Dobot_video264/press_button_converted.mp4" type="video/mp4">
+                <video controls poster="https://via.placeholder.com/1200x400/3498db/ffffff?text=Video+1" loop>
+                    <source src="static/videos/Dobot_video264/press_buttons_evaluation_video_converted.mp4" type="video/mp4">
                     Your browser does not support the video tag.
                 </video>
-                <div class="media-caption">Button Pressing Task: The scene contains a microwave with background objects. The robot must press one of the buttons on the microwave.</div>
+                <div class="media-caption">Press Buttons Task: The robot needs to press buttons in a specified order. Language instruction: "Press the green button, then the blue button, followed by the yellow button, and finally the red button."</div>
             </div>
+            
+            <!-- 把长方形块放进最上面的抽屉里面 -->
             <div class="media-item">
-                <video controls poster="https://via.placeholder.com/1200x400/3498db/ffffff?text=Video+5" loop>
-                    <source src="static/videos/Dobot_video264/arrange_tableware_converted.mp4" type="video/mp4">
+                <video controls poster="https://via.placeholder.com/1200x400/3498db/ffffff?text=Video+1" loop>
+                    <source src="static/videos/Dobot_video264/put_item_in_drawer_evaluation_video_converted.mp4" type="video/mp4">
                     Your browser does not support the video tag.
                 </video>
-                <div class="media-caption">Long-horizon Manipulation Task: The scene contains a pink bowl, a white bowl, a green plate, and background objects. The robot must stack both bowls onto the green plate to tidy the table.</div>
+                <div class="media-caption">Put Item in Drawer Task: The robot needs to open the top drawer and place the rectangular block inside. Language instruction: "Open the top drawer and put the rectangular block into it."</div>
             </div>
+
         </div>
+
+        <!-- 失败案例分析 -->
+        <div class="media-gallery">
+            <h3 class="gallery-header">Real-World Failure Case Analysis</h3>
+
+            <div class="item01">
+                <p>
+                    We analyzed the failure cases encountered during the real-world evaluation of our TAVP. Below are the demonstration videos.
+                </p>
+            </div>
+
+            <div class="media-item">
+                <video controls poster="https://via.placeholder.com/1200x400/3498db/ffffff?text=Video+1" loop>
+                    <source src="static/videos/Dobot_video264/fail_case/manipulation_dataset_collect_fruits_evaluation_video_失败_converted.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <div class="media-caption">Failure Case 1: The robot fails to collect the fruits as instructed.</div>
+
+            </div>
+
+            <!--  Put Item in Drawer Task 失败-->
+            <div class="media-item">
+                <video controls poster="https://via.placeholder.com/1200x400/3498db/ffffff?text=Video+1" loop>
+                    <source src="static/videos/Dobot_video264/fail_case/put_item_in_drawer_evaluation_video失败_converted.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <div class="media-caption">Failure Case 2: The robot fails to put the item in the drawer as instructed.</div>  
+            </div>
+
+        <div class="media-gallery">
+            <h3 class="gallery-header">Real-World Robustness Testing</h3>
+
+            <div class="framework-image">
+                <div class="item01">
+                    <p>
+                        We conducted robustness testing on the "Grape Picking" task, covering Unseen Instance, Unseen Background, Unseen Object, Heavy Occlusion, and Illumination Variation.
+                    </p>
+                </div>
+                <!-- <img src="static/images/results/robustness_test.png" alt="robustness_test">
+                <p style="margin-top: 1rem; text-align: left; color: #666;"></p> -->
+            </div>
+
+
+
+            <div class="media-item">
+                <video controls poster="https://via.placeholder.com/1200x400/3498db/ffffff?text=Video+1" loop>
+                    <source src="static/videos/Dobot_video264/RobustnessTesting264/pick_grape_pcd_evaluation_video位置泛化2_converted.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <div class="media-caption">Location Generalization: The grasping positions and placing positions are not present in the training set.</div>
+            </div>
+            
+            <div class="media-item">
+                <video controls poster="https://via.placeholder.com/1200x400/3498db/ffffff?text=Video+1" loop>
+                    <source src="static/videos/Dobot_video264/RobustnessTesting264/pick_grape_pcd_evaluation_video背景变化_converted.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <!-- 背景泛化：背景的颜色发生变化 -->
+                <div class="media-caption">Background Generalization: The color of the background changes.</div>
+            </div>
+
+            <div class="media-item">
+                <video controls poster="https://via.placeholder.com/1200x400/3498db/ffffff?text=Video+1" loop>
+                    <source src="static/videos/Dobot_video264/RobustnessTesting264/pick_grape_pcd_evaluation_video实例泛化_converted.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <!-- 物体泛化：使用了训练集中没有出现过的葡萄品种 -->
+                <div class="media-caption">Instance Generalization: A grape variety that did not appear in the training set is used.</div>
+            </div>
+
+            <div class="media-item">
+                <video controls poster="https://via.placeholder.com/1200x400/3498db/ffffff?text=Video+1" loop>
+                    <source src="static/videos/Dobot_video264/RobustnessTesting264/pick_grape_pcd_evaluation_video对象+位置泛化_converted.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <video controls poster="https://via.placeholder.com/1200x400/3498db/ffffff?text=Video+1" loop>
+                    <source src="static/videos/Dobot_video264/RobustnessTesting264/pick_grape_pcd_evaluation_video对象+位置泛化1_converted.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <video controls poster="https://via.placeholder.com/1200x400/3498db/ffffff?text=Video+1" loop>
+                    <source src="static/videos/Dobot_video264/RobustnessTesting264/pick_grape_pcd_evaluation_video对象+位置泛化2_converted.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <!-- 对新的未见过的物体进行抓取 -->
+                <div class="media-caption">Object Generalization: The model is tested on a new unseen object.</div>
+            </div>
+
+            <div class="media-item">
+                <video controls poster="https://via.placeholder.com/1200x400/3498db/ffffff?text=Video+1" loop>
+                    <source src="static/videos/Dobot_video264/RobustnessTesting264/pick_grape_pcd_evaluation_video严重遮挡3_converted.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <!-- 重度遮挡：某些视角目标物体被其他物体严重遮挡 -->
+                <div class="media-caption">Heavy Occlusion: The target object is severely occluded by other objects from certain views.</div>
+            </div>
+
+            <!-- 灯光干扰 -->
+            <div class="media-item">
+                <video controls poster="https://via.placeholder.com/1200x400/3498db/ffffff?text=Video+1" loop>
+                    <source src="static/videos/Dobot_video264/RobustnessTesting264/pick_grape_pcd_evaluation_video灯光干扰_converted.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <div class="media-caption">Illumination Variation: The lighting conditions in the scene change significantly.</div>
+            </div>
+
 
         <!-- Simulation Task Videos -->
         <div class="simulation-grid">

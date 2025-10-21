@@ -42,9 +42,9 @@
 
 
 ## TODO LIST
-- [ ] Show more of the experimental results on the simulation benchmark
+- [X] Show more of the experimental results on the simulation benchmark
 
-- [ ] Show more experimental results on real world robots
+- [X] Show more experimental results on real world robots
 
 - [ ] Release the model and code
 
