@@ -6,7 +6,7 @@
     </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Learning to See and Act: Task-Aware View Planning for Robotic Manipulation</title>
+    <title>Learning to See and Act: Task-Aware Virtual View Exploration for Robotic Manipulation</title>
     <link rel="icon" type="image/x-icon" href="static/images/logo.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Source+Sans+Pro:wght@400;600;700&display=swap" rel="stylesheet">
@@ -170,8 +170,13 @@
             background: #2980b9;
         }
 
-        .btn i {
+        .btn i,
+        .btn .emoji-icon {
             margin-right: 0.6rem;
+        }
+
+        .btn .emoji-icon {
+            font-size: 1.2rem;
         }
 
         .btn-paper {
@@ -180,6 +185,20 @@
 
         .btn-paper:hover {
             background: #c0392b;
+        }
+
+        .hero-video {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 1rem 2rem;
+        }
+
+        .hero-video video {
+            width: 100%;
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            display: block;
+            background: black;
         }
 
         section {
@@ -617,6 +636,7 @@
             box-shadow: var(--shadow);
             transition: var(--transition);
             font-size: 1rem;
+            position: relative;
         }
 
         .media-item:hover {
@@ -668,6 +688,108 @@
             font-size: 0.9rem;
             text-align: center;
             background: #f9f9f9;
+        }
+
+        .media-badge {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            padding: 6px 12px;
+            border-radius: 999px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: white;
+            letter-spacing: 0.3px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            z-index: 2;
+        }
+
+        .media-badge.success {
+            background: linear-gradient(135deg, #1abc9c, #2ecc71);
+        }
+
+        .media-badge.fail {
+            background: linear-gradient(135deg, #c0392b, #e74c3c);
+        }
+
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1.2rem;
+            margin: 1rem 0 2rem;
+        }
+
+        .video-card {
+            position: relative;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            display: flex;
+            flex-direction: column;
+            transition: var(--transition);
+        }
+
+        .video-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.12);
+        }
+
+        .video-card video {
+            width: 100%;
+            height: auto;
+            aspect-ratio: 16 / 9;
+            object-fit: contain;
+            background: #000;
+            display: block;
+        }
+
+        .video-card .video-body {
+            padding: 12px 14px 14px;
+            background: #f9f9f9;
+            flex: 1;
+        }
+
+        .video-card .video-title {
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 6px;
+            font-size: 1rem;
+        }
+
+        .video-card .video-caption {
+            font-size: 0.9rem;
+            color: #555;
+            line-height: 1.4;
+        }
+
+        .video-badge {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            padding: 6px 10px;
+            border-radius: 999px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: white;
+            letter-spacing: 0.3px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .video-badge.success {
+            background: linear-gradient(135deg, #27ae60, #2ecc71);
+        }
+
+        .video-badge.fail {
+            background: linear-gradient(135deg, #c0392b, #e74c3c);
+        }
+
+        .subsection-header {
+            margin-top: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+            font-size: 1.1rem;
+            font-weight: 700;
         }
 
         .simulation-grid {
@@ -754,16 +876,17 @@
     <header>
         <div class="header-bg"></div>
         <div class="header-content">
-            <h1>Learning to See and Act: Task-Aware View Planning for Robotic Manipulation</h1>
+            <h1>Learning to See and Act: Task-Aware Virtual View Exploration for Robotic Manipulation</h1>
 
             <div class="authors">
                 <div class="author"><a href="https://scholar.google.com/citations?user=W_YDucAAAAAJ&hl=zh-CN" target="_blank">Yongjie Bai</a><sup>1,2</sup><sup>*</sup></div>
                 <div class="author"><a href="https://wzhouxiff.github.io/" target="_blank">Zhouxia Wang</a><sup>3</sup><sup>*</sup></div>
-                <div class="author"><a href="https://yangliu9208.github.io/" target="_blank">Yang Liu</a><sup>1</sup><sup>†</sup></div>
+                <div class="author"><a href="https://yangliu9208.github.io/" target="_blank">Yang Liu</a><sup>1</sup><sup>✉</sup></div>
+                <div class="author"><span>Kaijun Luo</span><sup>1</sup></div>
+                <div class="author"><span>Yifan Wen</span><sup>1</sup></div>
+                <div class="author"><a href="https://github.com/CCCalcifer/" target="_blank">Mingtong Dai</a><sup>2,4</sup></div>
                 <div class="author"><a href="https://wissingchen.github.io/" target="_blank">Weixing Chen</a><sup>1</sup></div>
                 <div class="author"><a href="https://scholar.google.com/citations?user=RC-LN4QAAAAJ&hl=en" target="_blank">Ziliang Chen</a><sup>2</sup></div>
-                <div class="author"><a href="https://github.com/CCCalcifer/" target="_blank">Mingtong Dai</a><sup>2,4</sup></div>
-                <div class="author"><a href="https://zysensmile.github.io/" target="_blank">Yongsen Zheng</a><sup>3</sup></div>
                 <div class="author"><a href="https://lingboliu.com/" target="_blank">Lingbo Liu</a><sup>2</sup></div>
                 <div class="author"><a href="https://guanbinli.com/" target="_blank">Guanbin Li</a><sup>1,2</sup></div>
                 <div class="author"><a href="http://www.linliang.net/" target="_blank">Liang Lin</a><sup>1,2,5</sup></div>
@@ -771,7 +894,7 @@
 
             <div class="author-notes">
                 <small><sup>*</sup>Equal Contribution</small>
-                <small>, <sup>†</sup>Corresponding Author</small>
+                <small>, <sup>✉</sup>Corresponding Author</small>
             </div>
 
             <div class="affiliations">
@@ -779,7 +902,7 @@
                     <div class="affiliation-logo">
                         <img src="static/images/logo/sysu.png" alt="Sun Yat-sen University">
                     </div>
-                    <div><sup>1</sup>School of Computer Science and Engineering, Sun Yat-sen University</div>
+                    <div><sup>1</sup>Sun Yat-sen University</div>
                 </div>
                 <div class="affiliation">
                     <div class="affiliation-logo">
@@ -791,7 +914,7 @@
                     <div class="affiliation-logo">
                         <img src="static/images/logo/nyu.png" alt="Nanyang Technological University">
                     </div>
-                    <div><sup>3</sup>College of Computing and Data Science, Nanyang Technological University</div>
+                    <div><sup>3</sup>Nanyang Technological University</div>
                 </div>
                 <div class="affiliation">
                     <div class="affiliation-logo">
@@ -812,10 +935,14 @@
                 <a href="https://arxiv.org/pdf/2508.05186" class="btn btn-paper"><i class="fas fa-file-pdf"></i> Paper PDF</a>
                 <!-- <a href="#" class="btn"><i class="fas fa-video"></i> Video</a> -->
                 <a href="https://github.com/HCPLab-SYSU/TAVP" class="btn"><i class="fas fa-code"></i> Code (Coming Soon)</a>
-                <!-- <a href="#" class="btn"><i class="fas fa-database"></i> Dataset</a> -->
+                <a href="https://huggingface.co/datasets/baiyu858/RLBench-OG" class="btn"><span class="emoji-icon" role="img" aria-label="Hugging Face">🤗</span> RLBench-OG</a>
             </div>
         </div>
     </header>
+
+    <div class="hero-video">
+        <video src="static/videos/success_banner_v4.mp4" autoplay muted loop playsinline controls></video>
+    </div>
 
     <section>
         <div class="section-title">
@@ -824,15 +951,15 @@
 
         <div class="abstract">
             <p>
-                Recent vision-language-action (VLA) models for multi-task robotic manipulation commonly rely on static viewpoints and shared visual encoders, which limit 3D perception and cause task interference, hindering robustness and generalization. In this work, we propose Task-Aware View Planning (TAVP), a framework designed to overcome these challenges by integrating active view planning with task-specific representation learning.
+                Recent vision-language-action (VLA) models for multi-task robotic manipulation commonly rely on static viewpoints and shared visual encoders, which limit 3D perception and cause task interference, hindering robustness and generalization. In this work, we propose Task-aware Virtual View Exploration (TVVE), a framework designed to overcome these challenges by integrating virtual view exploration with task-specific representation learning. TVVE employs an efficient exploration policy, accelerated by a novel pseudo-environment, to acquire informative views.
             </p>
 
             <div class="highlight">
-                TAVP employs an efficient exploration policy, accelerated by a novel pseudo-environment, to actively acquire informative views. Furthermore, we introduce a Mixture-of-Experts (MoE) visual encoder to disentangle features across different tasks, boosting both representation fidelity and task generalization.
+                Furthermore, we introduce a Task-aware Mixture-of-Experts (TaskMoE) visual encoder to disentangle features across different tasks, boosting both representation fidelity and task generalization.
             </div>
 
             <p>
-                By learning to see the world in a task-aware way, TAVP generates more complete and discriminative visual representations, demonstrating significantly enhanced action prediction across a wide array of manipulation challenges. Extensive experiments on RLBench tasks show that our proposed TAVP model achieves superior performance over state-of-the-art fixed-view approaches.
+                By learning to see the world in a task-aware way, TVVE generates more complete and discriminative visual representations, demonstrating significantly enhanced action prediction across a wide array of manipulation challenges. To further validate the robustness and generalization capability of TVVE under out-of-distribution (OOD) settings, we construct a challenging benchmark, <strong>RLBench-OG</strong>, covering various visual perturbations and camera pose variations. Extensive experiments on RLBench and RLBench-OG show that our TVVE achieves superior performance over state-of-the-art approaches. In real-robot experiments, TVVE demonstrates exceptional performance and generalizes robustly in multiple OOD settings, including visual disturbances and unseen instructions.
             </p>
         </div>
 
@@ -851,20 +978,20 @@
                     <li><strong>Reduced generalization</strong>: Poor performance on novel scenarios</li>
                 </ul>
 
-                <h3>Our Solution: Task-Aware View Planning</h3>
-                <p>TAVP introduces two key innovations:</p>
+                <h3>Our Solution: Task-Aware Virtual View Exploration</h3>
+                <p>TVVE introduces two key innovations:</p>
                 <ul>
-                    <li><strong>Multi-Viewpoint Exploration Policy (MVEP)</strong>: Actively selects optimal viewpoints to maximize information gain</li>
+                    <li><strong>Multi-Viewpoint Exploration Policy (MVEP)</strong>: Selects better viewpoints to maximize information gain</li>
                     <li><strong>Task-aware Mixture-of-Experts (TaskMoE)</strong>: Dynamically routes features to specialized experts based on task requirements</li>
                 </ul>
             </div>
 
             <div class="teaser-visual">
-                <img src="static/images/model/motivation.png" alt="Fixed View vs. TAVP Comparison">
+                <img src="static/images/model/motivation.png" alt="Fixed View vs. TVVE Comparison">
                 <div class="visual-caption">
-                    <p>Fig. 1: <strong>Motivation Illustration.</strong> Observations captured from fixed cameras often miss parts of the target objects. For example, the front view only captures the cupboard (highlighted with a red circle), while the left and right shoulder views only show the sugar (already grasped by the end-effector and highlighted with green circles). These incomplete observations may lead to failed operations. In contrast, our proposed TAVP is designed to dynamically explore and re-render informative viewpoints that maximize coverage of target-relevant information, thereby improving the reliability of manipulation outcomes.</p>
+                    <p>Fig. 1: <strong>Motivation Illustration.</strong> Observations captured from fixed cameras often miss parts of the target objects. For example, the front view only captures the cupboard (highlighted with a red circle), while the left and right shoulder views only show the sugar (already grasped by the end-effector and highlighted with green circles). These incomplete observations may lead to failed operations. In contrast, our proposed TVVE is designed to dynamically explore and re-render informative viewpoints that maximize coverage of target-relevant information, thereby improving the reliability of manipulation outcomes.</p>
                     <!-- <p><strong>Fixed View Limitations:</strong> Observations from fixed cameras miss critical information - cupboard in front view, end-effector in shoulder views.</p>
-                    <p><strong>TAVP Solution:</strong> Dynamically explores viewpoints to capture both target object and end-effector simultaneously.</p> -->
+                    <p><strong>TVVE Solution:</strong> Dynamically explores viewpoints to capture both target object and end-effector simultaneously.</p> -->
                 </div>
             </div>
         </div>
@@ -891,8 +1018,8 @@
                 </div>
                 <div class="card-body">
                     <ul>
-                        <li>Active viewpoint exploration</li>
-                        <li>Dynamic multi-view re-rendering</li>
+                        <!-- <li>Active viewpoint exploration</li> -->
+                        <li>Dynamic virtual multi-view re-rendering</li>
                         <li>Optimized camera positioning</li>
                         <li>Enhanced 3D perception</li>
                         <li>Occlusion minimization</li>
@@ -909,7 +1036,7 @@
                         <li>Task-specific feature extraction</li>
                         <li>Dynamic expert routing</li>
                         <li>Parameter sharing for similar tasks</li>
-                        <li>Reduced task interference</li>
+                        <!-- <li>Reduced task interference</li> -->
                         <li>Improved multi-task generalization</li>
                     </ul>
                 </div>
@@ -924,17 +1051,17 @@
 
         <div class="framework">
             <div class="framework-header">
-                TAVP Framework Overview
+                TVVE Framework Overview
             </div>
             <div class="framework-image">
-                <img src="static/images/model/overview_v1.png" alt="TAVP Framework Diagram">
-                <p style="margin-top: 1rem; text-align: left; color: #666;">Fig. 2: <strong>The overview of our Task-Aware View Planning (TAVP) framework.</strong> The input of this framework is four RGB-D images from fixed viewpoints. First, it converts them into point clouds and aggregates them into a global point cloud in the world coordinate system. Then, it diverges into two branches: One branch (orange) performs <strong>Coarse Grounding</strong> to predict the approximate position of the end-effector. Subsequently, it moves the center of the global point cloud to this predicted position, performs scaling and cropping, retaining the important point cloud region. Another branch (green) receives the global point cloud, passes it through MVEP to predict the optimal camera parameters for the observation viewpoint. Then, using these parameters, it renders a 2D image from the point cloud processed by the red branch. This rendered image is fed into the <strong>Fine Grounding</strong> to predict the final robot action, including the end-effector position, rotation, gripper status, and collision state.</p>
+                <img src="static/images/model/overview_v1.png" alt="TVVE Framework Diagram">
+                <p style="margin-top: 1rem; text-align: left; color: #666;">Fig. 2: <strong>The overview of our Task-Aware Virtual View Exploration (TVVE) framework.</strong> The input of this framework is four RGB-D images from fixed viewpoints. First, it converts them into point clouds and aggregates them into a global point cloud in the world coordinate system. Then, it diverges into two branches: One branch (orange) performs <strong>Coarse Grounding</strong> to predict the approximate position of the end-effector. Subsequently, it moves the center of the global point cloud to this predicted position, performs scaling and cropping, retaining the important point cloud region. Another branch (green) receives the global point cloud, passes it through MVEP to predict the optimal camera parameters for the observation viewpoint. Then, using these parameters, it renders a 2D image from the point cloud processed by the red branch. This rendered image is fed into the <strong>Fine Grounding</strong> to predict the final robot action, including the end-effector position, rotation, gripper status, and collision state.</p>
             </div>
             <div class="framework-steps">
                 <div class="step">
                     <!-- <div class="step-number">1</div> -->
                     <!-- <h3>Input Processing</h3> -->
-                    <p>Our proposed Task-Aware View Planning (TAVP) framework aims to identify optimal viewpoints for accurate and robust robotic manipulation, guided by task-specific visual feature extraction. TAVP takes as input a language instruction, the current visual observations from RGB-D cameras, and the current gripper state. To enable the model to explore the optimal observations from arbitrary viewpoints, we first reconstruct a 3D point cloud of the scene using the input RGB-D images. To narrow down the search space and enable task-aligned view selection, we leverage the coarse prediction stage from RVT-2 to generate an area of interest. However, unlike RVT-2, which extracts visual features for all tasks using a shared Multi-View Transformer (MVT), we introduce a Task-Aware Mixture-of-Experts (TaskMoE) module before MVT to route instructions to specialized expert encoders. This design enables more precise and task-aligned visual feature extraction, which benefits both viewpoint selection and action prediction. Starting from the identified area of interest, we employ a Multi-Viewpoint Exploration Policy Network (MVEPN) to search for optimal camera poses that maximize the visibility of the target object and the end-effector. The selected viewpoints are then re-rendered into image observations and processed using another TaskMoE-based MVT before being passed to the action prediction model. For action prediction, we also upgrade the autoregressive action sequence model proposed in ARP with our proposed TaskMoE to attain more task-specific feature extraction and action prediction.</p>
+                    <p>Our proposed Task-Aware Virtual View Exploration (TVVE) framework aims to identify optimal viewpoints for accurate and robust robotic manipulation, guided by task-specific visual feature extraction. TVVE takes as input a language instruction, the current visual observations from RGB-D cameras, and the current gripper state. To enable the model to explore the optimal observations from arbitrary viewpoints, we first reconstruct a 3D point cloud of the scene using the input RGB-D images. To narrow down the search space and enable task-aligned view selection, we leverage the coarse prediction stage from RVT-2 to generate an area of interest. However, unlike RVT-2, which extracts visual features for all tasks using a shared Multi-View Transformer (MVT), we introduce a Task-Aware Mixture-of-Experts (TaskMoE) module before MVT to route instructions to specialized expert encoders. This design enables more precise and task-aligned visual feature extraction, which benefits both viewpoint selection and action prediction. Starting from the identified area of interest, we employ a Multi-Viewpoint Exploration Policy Network (MVEPN) to search for optimal camera poses that maximize the visibility of the target object and the end-effector. The selected viewpoints are then re-rendered into image observations and processed using another TaskMoE-based MVT before being passed to the action prediction model. For action prediction, we also upgrade the autoregressive action sequence model proposed in ARP with our proposed TaskMoE to attain more task-specific feature extraction and action prediction.</p>
                     <!-- <div class="point-cloud-container">
                         <img src="https://via.placeholder.com/256x256/3498db/ffffff?text=Point+Cloud+GIF" alt="Point Cloud Visualization" class="point-cloud-gif">
                     </div> -->
@@ -1064,19 +1191,128 @@
 
     <section>
         <div class="section-title">
-            <h2>Experiment</h2>
+            <h2>Real-Robot Experiment</h2>
+        </div>
+        <div class="abstract">
+            <p>
+To evaluate the generalization of TVVE across different robotic platforms, we conducted experiments on both the <strong>Franka Research 3</strong> and <strong>Dobot Nova 2</strong> robots. The Franka used a single front-mounted third-person camera, while the Dobot utilized three depth cameras at different positions.
+
+Furthermore, to assess performance across a broader range of tasks, we extended testing on the Franka platform to include ten additional tasks, such as articulated and deformable object manipulation. Experimental results show that our method achieves high success rates, highlighting its adaptability and effectiveness across diverse tasks.
+            </p>
+        </div>
+
+        <!-- Franka real-robot evaluation -->
+        <div class="media-gallery">
+            <h3 class="gallery-header">Franka Real-Robot Evaluation Demonstrations</h3>
+
+            <h4 class="subsection-header">Successful Executions</h4>
+            <div class="video-grid">
+                <div class="video-card">
+                    <div class="video-badge success">Success</div>
+                    <video controls loop>
+                        <source src="static/videos/Franka_Eval_Video/success/collect_fruits.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    <div class="video-body">
+                        <div class="video-title">Collect Fruits</div>
+                        <div class="video-caption">Language instruction: Put a cucumber and a kiwi into the blue bowl.</div>
+                    </div>
+                </div>
+                <div class="video-card">
+                    <div class="video-badge success">Success</div>
+                    <video controls loop>
+                        <source src="static/videos/Franka_Eval_Video/success/fold_towel.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    <div class="video-body">
+                        <div class="video-title">Fold Towel</div>
+                        <div class="video-caption">Language instruction: Fold the towel.</div>
+                    </div>
+                </div>
+                <div class="video-card">
+                    <div class="video-badge success">Success</div>
+                    <video controls loop>
+                        <source src="static/videos/Franka_Eval_Video/success/pick_place.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    <div class="video-body">
+                        <div class="video-title">Pick and Place</div>
+                        <div class="video-caption">Language instruction: Put the carrot into the purple plate.</div>
+                    </div>
+                </div>
+                <div class="video-card">
+                    <div class="video-badge success">Success</div>
+                    <video controls loop>
+                        <source src="static/videos/Franka_Eval_Video/success/press_buttons.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    <div class="video-body">
+                        <div class="video-title">Press Buttons</div>
+                        <div class="video-caption">Language instruction: Press the yellow button, then the blue button, followed by the red button, and finally the green button.</div>
+                    </div>
+                </div>
+                <div class="video-card">
+                    <div class="video-badge success">Success</div>
+                    <video controls loop>
+                        <source src="static/videos/Franka_Eval_Video/success/reach_drag.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    <div class="video-body">
+                        <div class="video-title">Reach and Drag</div>
+                        <div class="video-caption">Language instruction: Sweep the green apple into the gap between buttons using wood board.</div>
+                    </div>
+                </div>
+                <div class="video-card">
+                    <div class="video-badge success">Success</div>
+                    <video controls loop>
+                        <source src="static/videos/Franka_Eval_Video/success/stack_bowls.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    <div class="video-body">
+                        <div class="video-title">Stack Bowls</div>
+                        <div class="video-caption">Language instruction: Stack a beige bowl and a green bowl on a purple plate.</div>
+                    </div>
+                </div>
+            </div>
+
+            <h4 class="subsection-header">Failure Cases</h4>
+            <div class="video-grid">
+                <div class="video-card">
+                    <div class="video-badge fail">Failure</div>
+                    <video controls loop>
+                        <source src="static/videos/Franka_Eval_Video/fail/collect_fruits.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    <div class="video-body">
+                        <div class="video-title">Collect Fruits</div>
+                        <div class="video-caption">Language instruction: Put a cucumber, a kiwi and a bunch of grapes into the blue bowl.</div>
+                    </div>
+                </div>
+                <div class="video-card">
+                    <div class="video-badge fail">Failure</div>
+                    <video controls loop>
+                        <source src="static/videos/Franka_Eval_Video/fail/pick_and_place.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    <div class="video-body">
+                        <div class="video-title">Pick and Place</div>
+                        <div class="video-caption">Language instruction: Put the carrot into the purple plate.</div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <!-- Real-world Video Gallery -->
         <div class="media-gallery">
-            <h3 class="gallery-header">Real-World Evaluation Video Demonstrations</h3>
-
+            <h3 class="gallery-header">Dobot Real-Robot Evaluation Demonstrations</h3>
+            <!-- <h4 class="subsection-header">Successful Executions</h4> -->
             <div class="abstract">
                 <p>
-                    We trained and deployed our TAVP on real-world manipulation tasks, and conducted analyses of both successful and failed cases. Below are the demonstration videos.
+                    We trained and deployed our TVVE on real-world manipulation tasks, and conducted analyses of both successful and failed cases. Below are the demonstration videos.
                 </p>
             </div>
             <div class="media-item">
+                <div class="media-badge success">Success</div>
                 <video controls poster="https://via.placeholder.com/1200x400/3498db/ffffff?text=Video+1" loop>
                     <source src="static/videos/Dobot_video264/collect_fruits_evaluation_video_converted.mp4" type="video/mp4">
                     Your browser does not support the video tag.
@@ -1085,6 +1321,7 @@
             </div>
             
             <div class="media-item">
+                <div class="media-badge success">Success</div>
                 <video controls poster="https://via.placeholder.com/1200x400/3498db/ffffff?text=Video+1" loop>
                     <source src="static/videos/Dobot_video264/stack_bowls_evaluation_video_converted.mp4" type="video/mp4">
                     Your browser does not support the video tag.
@@ -1093,6 +1330,7 @@
             </div>
 
             <div class="media-item">
+                <div class="media-badge success">Success</div>
                 <video controls poster="https://via.placeholder.com/1200x400/3498db/ffffff?text=Video+1" loop>
                     <source src="static/videos/Dobot_video264/pick_grape_evaluation_video_converted.mp4" type="video/mp4">
                     Your browser does not support the video tag.
@@ -1102,6 +1340,7 @@
 
             <!-- 依次按下按钮,绿、蓝、黄、红 -->
             <div class="media-item">
+                <div class="media-badge success">Success</div>
                 <video controls poster="https://via.placeholder.com/1200x400/3498db/ffffff?text=Video+1" loop>
                     <source src="static/videos/Dobot_video264/press_buttons_evaluation_video_converted.mp4" type="video/mp4">
                     Your browser does not support the video tag.
@@ -1111,6 +1350,7 @@
             
             <!-- 把长方形块放进最上面的抽屉里面 -->
             <div class="media-item">
+                <div class="media-badge success">Success</div>
                 <video controls poster="https://via.placeholder.com/1200x400/3498db/ffffff?text=Video+1" loop>
                     <source src="static/videos/Dobot_video264/put_item_in_drawer_evaluation_video_converted.mp4" type="video/mp4">
                     Your browser does not support the video tag.
@@ -1122,15 +1362,17 @@
 
         <!-- 失败案例分析 -->
         <div class="media-gallery">
-            <h3 class="gallery-header">Real-World Failure Case Analysis</h3>
+            <h3 class="gallery-header">Dobot Real-World Failure Case Analysis</h3>
+            <!-- <h4 class="subsection-header">Failure Executions</h4> -->
 
             <div class="item01">
                 <p>
-                    We analyzed the failure cases encountered during the real-world evaluation of our TAVP. Below are the demonstration videos.
+                    We analyzed the failure cases encountered during the real-world evaluation of our TVVE. Below are the demonstration videos.
                 </p>
             </div>
 
             <div class="media-item">
+                <div class="media-badge fail">Failure</div>
                 <video controls poster="https://via.placeholder.com/1200x400/3498db/ffffff?text=Video+1" loop>
                     <source src="static/videos/Dobot_video264/fail_case/manipulation_dataset_collect_fruits_evaluation_video_失败_converted.mp4" type="video/mp4">
                     Your browser does not support the video tag.
@@ -1141,6 +1383,7 @@
 
             <!--  Put Item in Drawer Task 失败-->
             <div class="media-item">
+                <div class="media-badge fail">Failure</div>
                 <video controls poster="https://via.placeholder.com/1200x400/3498db/ffffff?text=Video+1" loop>
                     <source src="static/videos/Dobot_video264/fail_case/put_item_in_drawer_evaluation_video失败_converted.mp4" type="video/mp4">
                     Your browser does not support the video tag.
@@ -1149,7 +1392,7 @@
             </div>
 
         <div class="media-gallery">
-            <h3 class="gallery-header">Real-World Robustness Testing</h3>
+            <h3 class="gallery-header">Dobot Real-World Robustness Testing</h3>
 
             <div class="framework-image">
                 <div class="item01">
@@ -1164,6 +1407,7 @@
 
 
             <div class="media-item">
+                <div class="media-badge success">Success</div>
                 <video controls poster="https://via.placeholder.com/1200x400/3498db/ffffff?text=Video+1" loop>
                     <source src="static/videos/Dobot_video264/RobustnessTesting264/pick_grape_pcd_evaluation_video位置泛化2_converted.mp4" type="video/mp4">
                     Your browser does not support the video tag.
@@ -1172,6 +1416,7 @@
             </div>
             
             <div class="media-item">
+                <div class="media-badge success">Success</div>
                 <video controls poster="https://via.placeholder.com/1200x400/3498db/ffffff?text=Video+1" loop>
                     <source src="static/videos/Dobot_video264/RobustnessTesting264/pick_grape_pcd_evaluation_video背景变化_converted.mp4" type="video/mp4">
                     Your browser does not support the video tag.
@@ -1181,6 +1426,7 @@
             </div>
 
             <div class="media-item">
+                <div class="media-badge success">Success</div>
                 <video controls poster="https://via.placeholder.com/1200x400/3498db/ffffff?text=Video+1" loop>
                     <source src="static/videos/Dobot_video264/RobustnessTesting264/pick_grape_pcd_evaluation_video实例泛化_converted.mp4" type="video/mp4">
                     Your browser does not support the video tag.
@@ -1190,6 +1436,7 @@
             </div>
 
             <div class="media-item">
+                <div class="media-badge success">Success</div>
                 <video controls poster="https://via.placeholder.com/1200x400/3498db/ffffff?text=Video+1" loop>
                     <source src="static/videos/Dobot_video264/RobustnessTesting264/pick_grape_pcd_evaluation_video对象+位置泛化_converted.mp4" type="video/mp4">
                     Your browser does not support the video tag.
@@ -1207,6 +1454,7 @@
             </div>
 
             <div class="media-item">
+                <div class="media-badge success">Success</div>
                 <video controls poster="https://via.placeholder.com/1200x400/3498db/ffffff?text=Video+1" loop>
                     <source src="static/videos/Dobot_video264/RobustnessTesting264/pick_grape_pcd_evaluation_video严重遮挡3_converted.mp4" type="video/mp4">
                     Your browser does not support the video tag.
@@ -1217,6 +1465,7 @@
 
             <!-- 灯光干扰 -->
             <div class="media-item">
+                <div class="media-badge success">Success</div>
                 <video controls poster="https://via.placeholder.com/1200x400/3498db/ffffff?text=Video+1" loop>
                     <source src="static/videos/Dobot_video264/RobustnessTesting264/pick_grape_pcd_evaluation_video灯光干扰_converted.mp4" type="video/mp4">
                     Your browser does not support the video tag.
@@ -1225,9 +1474,328 @@
             </div>
 
 
+                <!-- RLBench-OG benchmark -->
+        <div class="media-gallery">
+            <h3 class="gallery-header">RLBench-OG Benchmark (OOD)</h3>
+
+            <div class="abstract">
+                <p style="text-indent: 2em;">
+                     RLBench-OG is derived from RLBench and used for validate the robustness of our TVVE under occluded scenarios and its generalization capability in complex environments. 
+                </p>
+                <p style="text-indent: 2em;">
+                    RLBench-OG consists of two distinct suites: the <strong>Occlusion Suite</strong> and the <strong>Generalization Suite</strong>. We created variants across 10 tasks for evaluation. In the Occlusion Suite, we designed two experimental configurations: <strong>1)</strong> Models are both trained and tested directly under the occluded task configurations; <strong>2)</strong> Models are trained in the original RLBench task settings and then evaluated in a zero-shot manner under occluded conditions. For the Generalization Suite, models are trained in the original RLBench environment and subsequently evaluated in a zero-shot manner across various generalization settings. Each task is configured with 50 episodes for training. The mean success rate, evaluated on 25 episodes per task, is reported as mean ± standard deviation across three independent experimental runs. For simulating occlusion, we introduce occluders or rotate manipulated objects to create occlusions from a frontal viewpoint. For generalization, we introduce perturbations by: <strong>1)</strong> altering scene lighting, <strong>2)</strong> changing the color and texture of the tabletop, <strong>3)</strong> modifying the color and texture of the background, <strong>4)</strong> adding distractors, and <strong>5)</strong> adjusting the pose of the observation camera.
+                </p>
+                <p style="text-indent: 2em;">
+                    TVVE is evaluated on RLBench-OG, stressing both distribution shifts and occlusions. The following clips summarize successful adaptations and challenging failure cases across the Generalization and Occlusion suites.
+                </p>
+            </div>
+            <h4 class="subsection-header">Generalization Success</h4>
+            <div class="video-grid">
+                <div class="video-card">
+                    <div class="video-badge success">Success</div>
+                    <video controls loop>
+                        <source src="static/videos/RLBench-OG_Eval_video/generalization/success/background%20texture/take_usb_out_of_computer_h264.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    <div class="video-body">
+                        <div class="video-title">Take Usb out of Computer (Background Texture)</div>
+                        <div class="video-caption">Language instruction: grasp the usb stick and slide it out of the pc.</div>
+                    </div>
+                </div>
+                <div class="video-card">
+                    <div class="video-badge success">Success</div>
+                    <video controls loop>
+                        <source src="static/videos/RLBench-OG_Eval_video/generalization/success/camera%20pose/take_plate_off_the_black_colored_rack_h264.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    <div class="video-body">
+                        <div class="video-title">Take Plate off Colored Dish Rack (Camera Pose)</div>
+                        <div class="video-caption">Language instruction: remove the dish from the black rack.</div>
+                    </div>
+                </div>
+                <div class="video-card">
+                    <div class="video-badge success">Success</div>
+                    <video controls loop>
+                        <source src="static/videos/RLBench-OG_Eval_video/generalization/success/distractor/toilet_seat_down_h264.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    <div class="video-body">
+                        <div class="video-title">Toilet Seat Down (Distractor)</div>
+                        <div class="video-caption">Language instruction: grasping the top of the lid, close the toilet seat.</div>
+                    </div>
+                </div>
+                <div class="video-card">
+                    <div class="video-badge success">Success</div>
+                    <video controls loop>
+                        <source src="static/videos/RLBench-OG_Eval_video/generalization/success/light%20color/basketball_in_hoop_h264.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    <div class="video-body">
+                        <div class="video-title">Basketball in Hoop (Light Color)</div>
+                        <div class="video-caption">Language instruction: pick up the basketball and put it in the hoop.</div>
+                    </div>
+                </div>
+                <div class="video-card">
+                    <div class="video-badge success">Success</div>
+                    <video controls loop>
+                        <source src="static/videos/RLBench-OG_Eval_video/generalization/success/light%20color/straighten_rope_h264.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    <div class="video-body">
+                        <div class="video-title">Straighten Rope (Light Color)</div>
+                        <div class="video-caption">Language instruction: grasping each end of the rope in turn, leave the rope straight.</div>
+                    </div>
+                </div>
+                <div class="video-card">
+                    <div class="video-badge success">Success</div>
+                    <video controls loop>
+                        <source src="static/videos/RLBench-OG_Eval_video/generalization/success/table%20color/straighten_rope_h264.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    <div class="video-body">
+                        <div class="video-title">Straighten Rope (Table Color)</div>
+                        <div class="video-caption">Language instruction: grasping each end of the rope in turn, leave the rope straight.</div>
+                    </div>
+                </div>
+                <div class="video-card">
+                    <div class="video-badge success">Success</div>
+                    <video controls loop>
+                        <source src="static/videos/RLBench-OG_Eval_video/generalization/success/table%20texture/solve_puzzle_h264.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    <div class="video-body">
+                        <div class="video-title">Solve Puzzle (Table Texture)</div>
+                        <div class="video-caption">Language instruction: pick up the puzzle piece and place it on the puzzle.</div>
+                    </div>
+                </div>
+            </div>
+
+            <h4 class="subsection-header">Generalization Failures</h4>
+            <div class="video-grid">
+                <div class="video-card">
+                    <div class="video-badge fail">Failure</div>
+                    <video controls loop>
+                        <source src="static/videos/RLBench-OG_Eval_video/generalization/fail/block_pyramid_1_h264.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    <div class="video-body">
+                        <div class="video-title">Block Pyramid (Light Color)</div>
+                        <div class="video-caption">Language instruction: stack red blocks in a pyramid.</div>
+                    </div>
+                </div>
+                <div class="video-card">
+                    <div class="video-badge fail">Failure</div>
+                    <video controls loop>
+                        <source src="static/videos/RLBench-OG_Eval_video/generalization/fail/block_pyramid_2_h264.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    <div class="video-body">
+                        <div class="video-title">Block Pyramid (Distractor)</div>
+                        <div class="video-caption">Language instruction: stack red blocks in a pyramid.</div>
+                    </div>
+                </div>
+                <div class="video-card">
+                    <div class="video-badge fail">Failure</div>
+                    <video controls loop>
+                        <source src="static/videos/RLBench-OG_Eval_video/generalization/fail/solve_puzzle_1_h264.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    <div class="video-body">
+                        <div class="video-title">Solve Puzzle (Light Color)</div>
+                        <div class="video-caption">Language instruction: pick up the puzzle piece and place it on the puzzle.</div>
+                    </div>
+                </div>
+                <div class="video-card">
+                    <div class="video-badge fail">Failure</div>
+                    <video controls loop>
+                        <source src="static/videos/RLBench-OG_Eval_video/generalization/fail/solve_puzzle_2_h264.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    <div class="video-body">
+                        <div class="video-title">Solve Puzzle (Table Texture)</div>
+                        <div class="video-caption">Language instruction: pick up the puzzle piece and place it on the puzzle.</div>
+                    </div>
+                </div>
+                <!-- <div class="video-card">
+                    <div class="video-badge fail">Failure</div>
+                    <video controls loop>
+                        <source src="static/videos/RLBench-OG_Eval_video/generalization/fail/solve_puzzle_3_h264.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    <div class="video-body">
+                        <div class="video-title">Solve Puzzle 3</div>
+                        <div class="video-caption">Fine manipulation degraded under texture shift.</div>
+                    </div>
+                </div> -->
+                <!-- <div class="video-card">
+                    <div class="video-badge fail">Failure</div>
+                    <video controls loop>
+                        <source src="static/videos/RLBench-OG_Eval_video/generalization/fail/straighten_rope_1_h264.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    <div class="video-body">
+                        <div class="video-title">Straighten Rope 1</div>
+                        <div class="video-caption">Language instruction: grasping each end of the rope in turn, leave the rope straight.</div>
+                    </div>
+                </div>
+                <div class="video-card">
+                    <div class="video-badge fail">Failure</div>
+                    <video controls loop>
+                        <source src="static/videos/RLBench-OG_Eval_video/generalization/fail/water_plants_1_h264.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    <div class="video-body">
+                        <div class="video-title">Water Plants 1</div>
+                        <div class="video-caption">Language instruction: pick up the watering can by its handle and water the plant.</div>
+                    </div>
+                </div>
+                <div class="video-card">
+                    <div class="video-badge fail">Failure</div>
+                    <video controls loop>
+                        <source src="static/videos/RLBench-OG_Eval_video/generalization/fail/water_plants_2_h264.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    <div class="video-body">
+                        <div class="video-title">Water Plants 2</div>
+                        <div class="video-caption">Language instruction: pick up the watering can by its handle and water the plant.</div>
+                    </div>
+                </div> -->
+                <!-- <div class="video-card">
+                    <div class="video-badge fail">Failure</div>
+                    <video controls loop>
+                        <source src="static/videos/RLBench-OG_Eval_video/generalization/fail/water_plants_3_h264.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    <div class="video-body">
+                        <div class="video-title">Water Plants 3</div>
+                        <div class="video-caption">Hesitates under compounded texture and lighting shifts.</div>
+                    </div>
+                </div> -->
+            </div>
+
+            <h4 class="subsection-header">Occlusion Success</h4>
+            <div class="video-grid">
+                <div class="video-card">
+                    <div class="video-badge success">Success</div>
+                    <video controls loop>
+                        <source src="static/videos/RLBench-OG_Eval_video/occlusion/success/basketball_in_hoop_occlusion.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    <div class="video-body">
+                        <div class="video-title">Basketball in Hoop</div>
+                        <div class="video-caption">Language instruction: pick up the basketball and put it in the hoop.</div>
+                    </div>
+                </div>
+                <div class="video-card">
+                    <div class="video-badge success">Success</div>
+                    <video controls loop>
+                        <source src="static/videos/RLBench-OG_Eval_video/occlusion/success/close_drawer_occlusion.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    <div class="video-body">
+                        <div class="video-title">Close Drawer</div>
+                        <div class="video-caption">Language instruction: close the bottom drawer by pushing it shut.</div>
+                    </div>
+                </div>
+                <div class="video-card">
+                    <div class="video-badge success">Success</div>
+                    <video controls loop>
+                        <source src="static/videos/RLBench-OG_Eval_video/occlusion/success/scoop_with_spatula_occlusion.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    <div class="video-body">
+                        <div class="video-title">Scoop with Spatula</div>
+                        <div class="video-caption">Language instruction: scoop up the cube and lift it with the spatula.</div>
+                    </div>
+                </div>
+                <div class="video-card">
+                    <div class="video-badge success">Success</div>
+                    <video controls loop>
+                        <source src="static/videos/RLBench-OG_Eval_video/occlusion/success/straighten_rope_occlusion.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    <div class="video-body">
+                        <div class="video-title">Straighten Rope</div>
+                        <div class="video-caption">Language instruction: grasping each end of the rope in turn, leave the rope straight.</div>
+                    </div>
+                </div>
+                <div class="video-card">
+                    <div class="video-badge success">Success</div>
+                    <video controls loop>
+                        <source src="static/videos/RLBench-OG_Eval_video/occlusion/success/take_plate_off_colored_dish_rack_occlusion.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    <div class="video-body">
+                        <div class="video-title">Take Plate off Colored Dish Rack</div>
+                        <div class="video-caption">Language instruction: remove the dish from the purple rack.</div>
+                    </div>
+                </div>
+                <div class="video-card">
+                    <div class="video-badge success">Success</div>
+                    <video controls loop>
+                        <source src="static/videos/RLBench-OG_Eval_video/occlusion/success/take_usb_out_of_computer_occlusion.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    <div class="video-body">
+                        <div class="video-title">Take USB out of Computer</div>
+                        <div class="video-caption">Language instruction: grasp the usb stick and slide it out of the pc.</div>
+                    </div>
+                </div>
+                <div class="video-card">
+                    <div class="video-badge success">Success</div>
+                    <video controls loop>
+                        <source src="static/videos/RLBench-OG_Eval_video/occlusion/success/toilet_seat_down_occlusion.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    <div class="video-body">
+                        <div class="video-title">Toilet Seat Down</div>
+                        <div class="video-caption">Language instruction: grasping the top of the lid, close the toilet seat.</div>
+                    </div>
+                </div>
+                <div class="video-card">
+                    <div class="video-badge success">Success</div>
+                    <video controls loop>
+                        <source src="static/videos/RLBench-OG_Eval_video/occlusion/success/water_plants_occlusion.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    <div class="video-body">
+                        <div class="video-title">Water Plants</div>
+                        <div class="video-caption">Language instruction: pick up the watering can by its handle and water the plant.</div>
+                    </div>
+                </div>
+            </div>
+
+            <h4 class="subsection-header">Occlusion Failures</h4>
+            <div class="video-grid">
+                <div class="video-card">
+                    <div class="video-badge fail">Failure</div>
+                    <video controls loop>
+                        <source src="static/videos/RLBench-OG_Eval_video/occlusion/fail/block_pyramid_occlusion.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    <div class="video-body">
+                        <div class="video-title">Block Pyramid (Occlusion)</div>
+                        <div class="video-caption">Language instruction: stack red blocks in a pyramid.</div>
+                    </div>
+                </div>
+                <div class="video-card">
+                    <div class="video-badge fail">Failure</div>
+                    <video controls loop>
+                        <source src="static/videos/RLBench-OG_Eval_video/occlusion/fail/solve_puzzle_occlusion.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    <div class="video-body">
+                        <div class="video-title">Solve Puzzle (Occlusion)</div>
+                        <div class="video-caption">Language instruction: pick up the puzzle piece and place it on the puzzle.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
         <!-- Simulation Task Videos -->
         <div class="simulation-grid">
-            <h3 class="simulation-header">Simulation Task Demonstrations</h3>
+            <h3 class="simulation-header">RLBench 18-Tasks Demonstrations</h3>
             <!-- 18 simulation videos -->
             <div class="simulation-item">
                 <video controls loop>
@@ -1345,7 +1913,7 @@
             <div class="conclusion-content">
                 <h2>Conclusion</h2>
                 <p style="font-size: 1.2rem; max-width: 800px; margin: 0 auto;">
-                    TAVP establishes that dynamic view planning and task-aware representation learning significantly advance robotic manipulation capabilities. The MVEP module's viewpoint optimization effectively overcomes occlusion limitations in fixed-viewpoint systems, while TaskMoE's specialized feature extraction mitigates multi-task interference. These innovations collectively enhance performance across diverse manipulation challenges and enable meaningful generalization to novel tasks.
+                    TVVE establishes that dynamic view planning and task-aware representation learning significantly advance robotic manipulation capabilities. The MVEP module's viewpoint optimization effectively overcomes occlusion limitations in fixed-viewpoint systems, while TaskMoE's specialized feature extraction mitigates multi-task interference. These innovations collectively enhance performance across diverse manipulation challenges and enable meaningful generalization to novel tasks.
                 </p>
             </div>
         </div>
@@ -1381,8 +1949,8 @@
 
         <div class="bibtex">
             @article{bai2025learning,
-              title={Learning to See and Act: Task-Aware View Planning for Robotic Manipulation},
-              author={Bai, Yongjie and Wang, Zhouxia and Liu, Yang and Chen, Weixing and Chen, Ziliang and Dai, Mingtong and Zheng, Yongsen and Liu, Lingbo and Li, Guanbin and Lin, Liang},
+              title={Learning to See and Act: Task-Aware Virtual View Exploration for Robotic Manipulation},
+              author={Bai, Yongjie and Wang, Zhouxia and Liu, Yang and Luo, Kaijun and Wen, Yifan and Dai, Mingtong and Chen, Weixing and Chen, Ziliang and Liu, Lingbo and Li, Guanbin and Lin, Liang},
               journal={arXiv preprint arXiv:2508.05186},
               year={2025}
             }
@@ -1400,8 +1968,8 @@
 
     <footer>
         <div class="footer-content">
-            <div class="footer-logo">TAVP</div>
-            <p>Task-Aware View Planning for Robotic Manipulation</p>
+            <div class="footer-logo">TVVE</div>
+            <p>Task-Aware Virtual View Exploration for Robotic Manipulation</p>
 
             <div class="footer-links">
                 <a href="https://hcplab-sysu.github.io/TAVP"><i class="fas fa-home"></i> Project Home</a>
@@ -1412,7 +1980,7 @@
             </div>
 
             <!-- <div class="copyright">
-                &copy; 2024 Learning to See and Act: Task-Aware View Planning for Robotic Manipulation. All rights reserved.
+                &copy; 2024 Learning to See and Act: Task-Aware Virtual View Exploration for Robotic Manipulation. All rights reserved.
             </div> -->
         </div>
     </footer>
