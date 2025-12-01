@@ -2012,38 +2012,20 @@ Furthermore, to assess performance across a broader range of tasks, we extended 
         });
     </script> -->
     <script>
-        // 获取所有视频元素
-        const videos = document.querySelectorAll('.media-item video');
-        
-        // 页面加载完成后确保视频播放
         document.addEventListener('DOMContentLoaded', () => {
+            const videos = document.querySelectorAll('video');
+
             videos.forEach(video => {
-                video.loop=true;
-                // 处理可能的自动播放限制
+                video.muted = true;
+                video.loop = true;
+                video.autoplay = true;
+                video.playsInline = true;
+                video.setAttribute('playsinline', '');
+
                 video.play().catch(error => {
-                    console.log('自动播放受浏览器限制，尝试用户交互后播放:', error);
-                    
-                    // 当用户点击页面任意位置时播放视频
+                    console.log('自动播放受浏览器限制，等待用户交互后播放:', error);
                     document.body.addEventListener('click', () => {
-                        video.play();
-                    }, { once: true });
-                });
-            });
-        });
-    </script>
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const simVideos = document.querySelectorAll('.simulation-item video');
-            
-            simVideos.forEach(video => {
-                // 尝试自动播放
-                video.loop=true;
-                video.play().catch(error => {
-                    console.log('模拟视频自动播放受限:', error);
-                    
-                    // 当用户点击页面时尝试播放
-                    document.body.addEventListener('click', () => {
-                        video.play();
+                        video.play().catch(() => {});
                     }, { once: true });
                 });
             });

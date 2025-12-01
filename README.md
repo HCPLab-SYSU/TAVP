@@ -49,6 +49,13 @@
 
 - [ ] Release the model and code
 
+- [X] Release RLBench-OG Benchmark
+     - [Dataset](https://huggingface.co/datasets/baiyu858/RLBench-OG)
+     - [Code](https://github.com/baiyu858/rlbench-og.git)
+
+- [ ] Release test code on RLBench-OG
+
+
 ## Citation
 
 This is the official repository of [TVVE](https://hcplab-sysu.github.io/TAVP/). If you find our work useful, please consider citing our paper:
