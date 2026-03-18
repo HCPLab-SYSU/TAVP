@@ -177,11 +177,12 @@ data/train
 data/test
 ```
 
-### Optional: RLBench-OG benchmark
+### RLBench-OG Benchmark
 
 The OOD benchmark released for this project is available at:
 
-- https://huggingface.co/datasets/baiyu858/RLBench-OG
+- [RLBench-OG Datasets](https://huggingface.co/datasets/baiyu858/RLBench-OG)
+- [RLBench-OG Code](https://github.com/baiyu858/rlbench-og.git)
 
 ### Important path note
 
