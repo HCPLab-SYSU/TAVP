@@ -15,3 +15,12 @@ static/videos/success_banner_v2.mp4
 static/videos/success_banner_v3.mp4
 static/videos/success_banner.mp4
 NEWS.md
+
+__pycache__/
+*.pyc
+logs/
+outputs/
+static/pdfs/
+docs/
+wandb/
+*.wandb

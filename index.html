@@ -6,7 +6,7 @@
     </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Learning to See and Act: Task-Aware Virtual View Exploration for Robotic Manipulation</title>
+    <title>TVVE | CVPR 2026 Accepted</title>
     <link rel="icon" type="image/x-icon" href="static/images/logo.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Source+Sans+Pro:wght@400;600;700&display=swap" rel="stylesheet">
@@ -67,9 +67,62 @@
 
         h1 {
             font-size: 2.8rem;
-            margin-bottom: 1.5rem;
+            margin-bottom: 0.75rem;
             font-weight: 700;
             text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .hero-kicker {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0.45rem 1rem;
+            margin-bottom: 1rem;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.14);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            color: rgba(255, 255, 255, 0.92);
+            font-size: 0.95rem;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            backdrop-filter: blur(8px);
+        }
+
+        .acceptance-strip {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.9rem;
+            flex-wrap: wrap;
+            margin: 0 0 1.2rem;
+        }
+
+        .acceptance-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.55rem;
+            padding: 0.7rem 1.25rem;
+            border-radius: 999px;
+            font-weight: 700;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.18);
+        }
+
+        .acceptance-pill.primary {
+            color: #111827;
+            background: linear-gradient(120deg, #ff6b6b 0%, #ffb347 35%, #7dd3fc 68%, #86efac 100%);
+        }
+
+        .acceptance-pill.secondary {
+            color: #f8fafc;
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.16);
+        }
+
+        .hero-note {
+            max-width: 900px;
+            margin: 0 auto 1.6rem;
+            font-size: 1.08rem;
+            color: rgba(255, 255, 255, 0.9);
         }
 
         .authors {
@@ -848,6 +901,19 @@
                 font-size: 2.2rem;
             }
 
+            .hero-kicker {
+                font-size: 0.8rem;
+            }
+
+            .acceptance-pill {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .hero-note {
+                font-size: 0.98rem;
+            }
+
             .section-title h2 {
                 font-size: 1.8rem;
             }
@@ -876,7 +942,15 @@
     <header>
         <div class="header-bg"></div>
         <div class="header-content">
+            <div class="hero-kicker"><i class="fas fa-robot"></i> TVVE</div>
             <h1>Learning to See and Act: Task-Aware Virtual View Exploration for Robotic Manipulation</h1>
+            <div class="acceptance-strip">
+                <div class="acceptance-pill primary"><i class="fas fa-award"></i> CVPR 2026 Accepted</div>
+
+            </div>
+            <!-- <p class="hero-note">
+                TVVE actively explores informative virtual viewpoints and learns task-aware visual representations for robust robotic manipulation across RLBench, RLBench-OG, and real-world settings.
+            </p> -->
 
             <div class="authors">
                 <div class="author"><a href="https://scholar.google.com/citations?user=W_YDucAAAAAJ&hl=zh-CN" target="_blank">Yongjie Bai</a><sup>1,2</sup><sup>*</sup></div>
@@ -934,7 +1008,7 @@
             <div class="buttons">
                 <a href="https://arxiv.org/pdf/2508.05186" class="btn btn-paper"><i class="fas fa-file-pdf"></i> Paper PDF</a>
                 <!-- <a href="#" class="btn"><i class="fas fa-video"></i> Video</a> -->
-                <a href="https://github.com/HCPLab-SYSU/TAVP" class="btn"><i class="fas fa-code"></i> Code (Coming Soon)</a>
+                <a href="https://github.com/HCPLab-SYSU/TAVP" class="btn"><i class="fas fa-code"></i> Code</a>
                 <a href="https://huggingface.co/datasets/baiyu858/RLBench-OG" class="btn"><span class="emoji-icon" role="img" aria-label="Hugging Face">🤗</span> RLBench-OG</a>
             </div>
         </div>
@@ -1948,11 +2022,12 @@ Furthermore, to assess performance across a broader range of tasks, we extended 
         </div>
 
         <div class="bibtex">
-            @article{bai2025learning,
-              title={Learning to See and Act: Task-Aware Virtual View Exploration for Robotic Manipulation},
-              author={Bai, Yongjie and Wang, Zhouxia and Liu, Yang and Luo, Kaijun and Wen, Yifan and Dai, Mingtong and Chen, Weixing and Chen, Ziliang and Liu, Lingbo and Li, Guanbin and Lin, Liang},
-              journal={arXiv preprint arXiv:2508.05186},
-              year={2025}
+            @InProceedings{Bai_2026_CVPR,
+              author    = {Bai, Yongjie and Wang, Zhouxia and Liu, Yang and Luo, Kaijun and Wen, Yifan and Dai, Mingtong and Chen, Weixing and Chen, Ziliang and Liu, Lingbo and Li, Guanbin and Lin, Liang},
+              title     = {Learning to See and Act: Task-Aware Virtual View Exploration for Robotic Manipulation},
+              booktitle = {Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)},
+              month     = {June},
+              year      = {2026}
             }
         </div>
         <!-- <div class="container is-max-desktop content">
@@ -2034,5 +2109,3 @@ Furthermore, to assess performance across a broader range of tasks, we extended 
 </body>
 
 </html>
-
-

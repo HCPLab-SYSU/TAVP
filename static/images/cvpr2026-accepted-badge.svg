@@ -1,0 +1,28 @@
+<svg width="640" height="140" viewBox="0 0 640 140" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="badgeGradient" x1="40" y1="24" x2="600" y2="116" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFDDE4"/>
+      <stop offset="0.34" stop-color="#FFE8C7"/>
+      <stop offset="0.7" stop-color="#DDF4FF"/>
+      <stop offset="1" stop-color="#DCFCE7"/>
+    </linearGradient>
+    <filter id="shadow" x="8" y="8" width="624" height="124" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feOffset dy="8"/>
+      <feGaussianBlur stdDeviation="10"/>
+      <feColorMatrix type="matrix" values="0 0 0 0 0.0823529 0 0 0 0 0.105882 0 0 0 0 0.184314 0 0 0 0.10 0"/>
+      <feBlend in2="SourceGraphic" result="shape"/>
+    </filter>
+  </defs>
+
+  <g filter="url(#shadow)">
+    <rect x="40" y="24" width="560" height="76" rx="38" fill="url(#badgeGradient)"/>
+    <rect x="58" y="42" width="52" height="40" rx="20" fill="#FFFFFF" fill-opacity="0.62"/>
+
+    <g transform="translate(84 62) scale(0.82)">
+      <path d="M0 -18L5.29 -7.29L17 -5.59L8.5 2.68L10.5 14.35L0 8.84L-10.5 14.35L-8.5 2.68L-17 -5.59L-5.29 -7.29L0 -18Z" fill="#F4B400"/>
+      <path d="M0 -14L3.7 -6.51L12 -5.31L6 0.52L7.41 8.75L0 4.86L-7.41 8.75L-6 0.52L-12 -5.31L-3.7 -6.51L0 -14Z" fill="#FFD54A" fill-opacity="0.72"/>
+    </g>
+
+    <text x="352" y="72" fill="#111827" font-family="Segoe UI, Arial, sans-serif" font-size="30" font-weight="800" text-anchor="middle">CVPR 2026 Accepted</text>
+  </g>
+</svg>
