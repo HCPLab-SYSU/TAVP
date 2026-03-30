@@ -209,7 +209,7 @@ In the script logic, this corresponds to `BRANCH=a` and `only_il_or_only_ppo=op`
 ./start_tvve_stage23.sh a 1 op
 ```
 
-### Stage 2 training: IL-only branch
+### Stage 3 training: IL-only branch
 
 In the script logic, this corresponds to `BRANCH=a` and `only_il_or_only_ppo=oi`.
 
