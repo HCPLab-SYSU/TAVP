@@ -41,6 +41,10 @@
 
 **TVVE** learns task-aware virtual viewpoints for robotic manipulation. The method combines a **Multi-Viewpoint Exploration Policy (MVEP)** with a **Task-aware Mixture-of-Experts** visual encoder (**TaskMoE**), improving 3D perception, feature discrimination, and cross-domain generalization on **RLBench**, **RLBench-OG**, and **real-world robot setups**.
 
+<video src="https://raw.githubusercontent.com/HCPLab-SYSU/TAVP/main/static/videos/success_banner_v4.mp4"
+       autoplay loop muted playsinline width="600">
+</video>
+
 ## <img src="https://raw.githubusercontent.com/microsoft/fluentui-emoji/main/assets/Clipboard/3D/clipboard_3d.png" width="28" alt="Clipboard" /> Table of Contents
 
 - [Highlights](#highlights)
