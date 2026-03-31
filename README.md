@@ -404,4 +404,4 @@ If you find **TVVE** useful in your research, please cite:
 
 ## <img src="https://raw.githubusercontent.com/microsoft/fluentui-emoji/main/assets/Sparkles/3D/sparkles_3d.png" width="28" alt="Sparkles" /> Acknowledgements
 
-This repository builds on several excellent open-source projects, including RLBench, PyRep, RVT, PerAct, and YARR. Please also cite their original work if you use this codebase in your research.
+This repository builds on several excellent open-source projects, including RLBench, PyRep, RVT, ARP, PerAct, and YARR. Please also cite their original work if you use this codebase in your research.
