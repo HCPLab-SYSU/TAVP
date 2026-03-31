@@ -18,6 +18,7 @@ NEWS.md
 
 __pycache__/
 *.pyc
+*.egg-info/
 logs/
 outputs/
 static/pdfs/

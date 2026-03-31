@@ -1,0 +1,18 @@
+absl-py
+einops
+ftfy
+gdown
+# hydra-core==1.0.5
+matplotlib
+# numpy==1.21
+packaging
+pandas
+pyrender
+# pytorch3d==0.3.0
+regex
+scipy
+tensorboard
+# torch==1.7.1
+# torchvision==0.8.2
+# transformers==4.3.2
+trimesh
