@@ -1,8 +1,6 @@
 <h1 align="center">Learning to See and Act: Task-Aware Virtual View Exploration for Robotic Manipulation</h1>
 
-<p align="center">
-  <img src="static/images/cvpr2026-accepted-badge.svg" width="320" alt="CVPR 2026 Accepted" />
-</p>
+<p align="center"><strong>Official implementation of TVVE</strong></p>
 
 <p align="center">
   <a href="https://scholar.google.com/citations?user=W_YDucAAAAAJ&hl=zh-CN">Yongjie Bai</a>,
@@ -20,31 +18,60 @@
 
 <p align="center">
   <a href="https://hcplab-sysu.github.io/TAVP/">
-    <img src="https://img.shields.io/badge/Website-1f6feb?logo=google-chrome&logoColor=white&style=flat-square" alt="Website" />
+    <img src="https://img.shields.io/badge/Project_Page-1f6feb?logo=google-chrome&logoColor=white&style=flat-square" alt="Project Page" />
   </a>
   <a href="https://arxiv.org/pdf/2508.05186">
     <img src="https://img.shields.io/badge/arXiv-2508.05186-b31b1b?logo=arxiv&logoColor=white&style=flat-square" alt="arXiv" />
   </a>
   <a href="https://huggingface.co/datasets/baiyu858/RLBench-OG">
-    <img src="https://img.shields.io/badge/HuggingFace-RLBench--OG-facc15?logo=huggingface&logoColor=black&style=flat-square" alt="RLBench-OG" />
+    <img src="https://img.shields.io/badge/HuggingFace-RLBench--OG-f59e0b?logo=huggingface&logoColor=white&style=flat-square" alt="RLBench-OG Dataset" />
   </a>
+  <a href="https://github.com/baiyu858/rlbench-og.git">
+    <img src="https://img.shields.io/badge/Benchmark_Code-181717?logo=github&logoColor=white&style=flat-square" alt="Benchmark Code" />
+  </a>
+</p>
+
+<p align="center">
+  <img src="static/images/cvpr2026-accepted-badge.svg" width="320" alt="CVPR 2026 Accepted" />
 </p>
 
 <p align="center">
   <img src="static/images/model/overview_v1.png" alt="TVVE overview" width="100%" />
 </p>
 
-TVVE learns to actively explore task-relevant virtual viewpoints for robotic manipulation. It combines a Multi-Viewpoint Exploration Policy (MVEP) with a Task-aware Mixture-of-Experts visual encoder (TaskMoE), producing stronger 3D perception, more discriminative visual features, and better generalization on RLBench, RLBench-OG, and real-world robot settings.
+**TVVE** learns task-aware virtual viewpoints for robotic manipulation. The method combines a **Multi-Viewpoint Exploration Policy (MVEP)** with a **Task-aware Mixture-of-Experts** visual encoder (**TaskMoE**), improving 3D perception, feature discrimination, and cross-domain generalization on **RLBench**, **RLBench-OG**, and **real-world robot setups**.
+
+## <img src="https://raw.githubusercontent.com/microsoft/fluentui-emoji/main/assets/Clipboard/3D/clipboard_3d.png" width="28" alt="Clipboard" /> Table of Contents
+
+- [Highlights](#highlights)
+- [Project Status](#project-status)
+- [Installation](#installation)
+- [Data Preparation](#data-preparation)
+- [Training and Evaluation on RLBench](#training-and-evaluation-on-rlbench)
+- [RLBench-OG Benchmark](#rlbench-og-benchmark)
+- [Repository Layout](#repository-layout)
+- [Citation](#citation)
+- [Acknowledgements](#acknowledgements)
 
 ## <img src="https://raw.githubusercontent.com/microsoft/fluentui-emoji/main/assets/Sparkles/3D/sparkles_3d.png" width="28" alt="Sparkles" /> Highlights
 
-- Accepted by **CVPR 2026**.
-- Official repository for **TVVE**.
-- Includes the training scripts, and evaluation entry points.
+- Accepted by 🔥**CVPR 2026**🔥.
+- Official code release for **TVVE**.
+- Training scripts for stage 1 and stage 2/3 optimization.
+- Evaluation entry points for RLBench and RLBench-OG.
+- Public release of the RLBench-OG benchmark dataset and codebase.
 
-## <img src="https://raw.githubusercontent.com/microsoft/fluentui-emoji/main/assets/Gear/3D/gear_3d.png" width="28" alt="Gear" /> Environment Setup
+## <img src="https://raw.githubusercontent.com/microsoft/fluentui-emoji/main/assets/Clipboard/3D/clipboard_3d.png" width="28" alt="Clipboard" /> Project Status
 
-### 1. Create a Python 3.8 conda environment
+- [x] Show more simulation results on RLBench and RLBench-OG
+- [x] Show more real-world robot results on Dobot and Franka
+- [x] Release the model and code
+- [x] Release the RLBench-OG benchmark
+- [x] Release the RLBench-OG test code
+
+## <img src="https://raw.githubusercontent.com/microsoft/fluentui-emoji/main/assets/Gear/3D/gear_3d.png" width="28" alt="Gear" /> Installation
+
+### 1. Create a Python environment
 
 ```bash
 conda create -n tvve python=3.8 -y
@@ -52,37 +79,36 @@ conda activate tvve
 pip install pip==21 setuptools==65.5.0 wheel==0.38.0
 ```
 
-### 2. Clone this repository
+### 2. Clone the repository
 
 ```bash
 git clone https://github.com/HCPLab-SYSU/TAVP.git
 cd TAVP
 ```
 
-### 3. Install the Python packages from `requirements.txt`
+### 3. Install Python dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### 4. Install CUDA 12 if needed
+### 4. Install CUDA-dependent extras
 
-Skip this step if CUDA 12 is already installed and `CUDA_HOME` is set correctly.
+Skip this step if your CUDA environment is already configured and compatible.
 
 ```bash
 bash ./cuda_12.3.2_545.23.08_linux.run --silent --toolkit --toolkitpath=$HOME/cuda-12.3
 export CUDA_HOME=$HOME/cuda-12.3
 ```
 
-### 5. Install extra dependencies used by TVVE
-
-#### 5.1 Install pytorch3d
+#### Install PyTorch3D
 
 ```bash
 export NVCC_FLAGS="--generate-code arch=compute_80,code=sm_80 --generate-code arch=compute_86,code=sm_86 --generate-code arch=compute_87,code=sm_87 --generate-code arch=compute_89,code=sm_89"
 pip install git+https://github.com/facebookresearch/pytorch3d.git@stable
 ```
-#### 5.2 Install xformers
+
+#### Install xFormers
 
 ```bash
 pip install ninja
@@ -93,9 +119,9 @@ pip install -v -U git+https://github.com/facebookresearch/xformers.git@main#egg=
 
 Adjust the CUDA architectures above to match your GPU.
 
-### 6. Install CoppeliaSim, PyRep, and RLBench
+### 5. Install CoppeliaSim, PyRep, and RLBench
 
-TVVE depends on the RLBench stack.
+**TVVE** depends on the **RLBench simulation stack**.
 
 ```bash
 cd ..
@@ -123,11 +149,11 @@ python setup.py develop
 cd ../TAVP
 ```
 
-If you are running on a headless server, also check the headless rendering notes in RLBench / PyRep before evaluation.
+If you evaluate on a **headless server**, make sure the corresponding **RLBench** and **PyRep** headless rendering requirements are satisfied.
 
-### 7. Install Faster Point-Renderer
+### 6. Install the faster point renderer
 
-This is the recommended renderer used by TVVE.
+This is the recommended renderer used by **TVVE**.
 
 ```bash
 cd ..
@@ -139,26 +165,26 @@ pip install -e .
 cd ../TAVP
 ```
 
-Then open `point-renderer/point_renderer/rvt_renderer.py` and remove the line:
+Then remove the following import from `point-renderer/point_renderer/rvt_renderer.py`:
 
 ```python
 from mvt.utils import ForkedPdb
 ```
 
-If you do not want to use the Faster Point-Renderer, set `render_with_cpp=False` in the TVVE config files.
+If you do not want to use the **C++ renderer**, set `render_with_cpp=false` in the config files.
 
-## <img src="https://raw.githubusercontent.com/microsoft/fluentui-emoji/main/assets/Package/3D/package_3d.png" width="28" alt="Package" /> Dataset Download
+## <img src="https://raw.githubusercontent.com/microsoft/fluentui-emoji/main/assets/Package/3D/package_3d.png" width="28" alt="Package" /> Data Preparation
 
-### RLBench train / test demonstrations
+### RLBench demonstrations
 
-The training scripts expect the compact RLBench dataset format released with ARP.
+The training scripts expect the compact **RLBench** dataset format released with **ARP**.
 
 ```bash
 mkdir -p data
 cd data
 ```
 
-Download `datasets/RLBench.tar` from the ARP Box folder:
+Download `datasets/RLBench.tar` from:
 
 - https://rutgers.box.com/s/uzozemx67kje58ycy3lyzf1zgddz8tyq
 
@@ -170,78 +196,201 @@ rm -f RLBench.tar
 cd ..
 ```
 
-After extraction, you should have paths such as:
+After extraction, the default layout is expected to look like:
 
 ```text
-data/train
-data/test
+data/
+  train/
+  test/
 ```
 
-### RLBench-OG Benchmark
+### RLBench-OG benchmark data
 
-The OOD benchmark released for this project is available at:
+The **benchmark resources** are released here:
 
-- [RLBench-OG Datasets](https://huggingface.co/datasets/baiyu858/RLBench-OG)
-- [RLBench-OG Code](https://github.com/baiyu858/rlbench-og.git)
+- **Dataset**: https://huggingface.co/datasets/baiyu858/RLBench-OG
+- **Code**: https://github.com/baiyu858/rlbench-og.git
 
-### Important path note
+## <img src="https://raw.githubusercontent.com/microsoft/fluentui-emoji/main/assets/Rocket/3D/rocket_3d.png" width="28" alt="Rocket" /> Training and Evaluation on RLBench
 
-The provided shell scripts currently use hard-coded local paths for datasets and checkpoints. Before running training or evaluation, update the following fields to match your machine:
+The provided shell scripts read paths from **environment variables**. If a variable is not set, the scripts fall back to `/path/to/...` placeholders.
 
-- `train.demo_folder` in `start_tvve_stage1.sh`
-- `train.demo_folder` in `start_tvve_stage23.sh`
-- `eval.datafolder` in `start_tvve_stage23.sh`
-- `weights` / `ckpt` in `start_tvve_stage23.sh`
-
-## <img src="https://raw.githubusercontent.com/microsoft/fluentui-emoji/main/assets/Rocket/3D/rocket_3d.png" width="28" alt="Rocket" /> Quick Start
-
-### Stage 1 training
+### 1. Set runtime paths
 
 ```bash
-./start_tvve_stage1.sh
+export TRAIN_DEMO_FOLDER=/path/to/rlbench/data/train
+export EVAL_DATA_FOLDER=/path/to/rlbench/data/test
+export STAGE1_INIT_WEIGHTS=/path/to/stage1_checkpoint.pth
+export STAGE23_ONLY_IL_WEIGHTS=/path/to/stage23_only_il_checkpoint.pth
+export STAGE23_EVAL_WEIGHTS=/path/to/stage23_eval_checkpoint.pth
 ```
 
-### Stage 2 training: PPO-only branch
-
-In the script logic, this corresponds to `BRANCH=a` and `only_il_or_only_ppo=op`.
+Depending on your workflow, you may also want to set:
 
 ```bash
-./start_tvve_stage23.sh a 1 op
+export STAGE23_JOINT_INIT_WEIGHTS=/path/to/stage23_joint_checkpoint.pth
+export STAGE23_PPO_IL_WEIGHTS=/path/to/stage23_ppo_il_checkpoint.pth
 ```
 
-### Stage 3 training: IL-only branch
+### 2. Run training or evaluation
 
-In the script logic, this corresponds to `BRANCH=a` and `only_il_or_only_ppo=oi`.
+| Command | Purpose |
+| --- | --- |
+| `./start_tvve_stage1.sh` | Stage 1 training |
+| `./start_tvve_stage23.sh a 1 op` | Stage 2 training with PPO-only updates |
+| `./start_tvve_stage23.sh a 1 oi` | Stage 3 training with IL-only updates |
+| `./start_tvve_stage23.sh b 1 oi` | RLBench evaluation |
+
+### 3. Notes
+
+- `a` starts **training** and `b` starts **evaluation** in `start_tvve_stage23.sh`.
+- Evaluation uses **`xvfb-run`**; install the required **headless rendering dependencies** first.
+- Logs are written to `logs/`, and **Hydra outputs** are written to `outputs/`.
+
+## <img src="https://raw.githubusercontent.com/microsoft/fluentui-emoji/main/assets/Rocket/3D/rocket_3d.png" width="28" alt="Rocket" /> RLBench-OG Benchmark
+
+### 1. Install the RLBench-OG environment
 
 ```bash
-./start_tvve_stage23.sh a 1 oi
+mkdir -p env
+cd env
+git clone https://github.com/baiyu858/rlbench-og.git
+cd rlbench-og
+pip install -r requirements.txt
+pip install -e .
+cd ../..
 ```
 
-### Evaluation
-
-In the script logic, this corresponds to `BRANCH=b`.
+### 2. Download and extract the dataset
 
 ```bash
-./start_tvve_stage23.sh b 1 oi
+huggingface-cli download baiyu858/RLBench-OG \
+    --repo-type dataset \
+    --local-dir ./data/RLBench-OG
+
+cd data/RLBench-OG
+tar -xvf Occlusion.tar.xz
+rm -f Occlusion.tar.xz
+
+cd Generalization
+tar -xvf train.tar.xz
+rm -f train.tar.xz
+tar -xvf test.tar.xz
+rm -f test.tar.xz
+
+cd ../../..
 ```
 
-### Notes before launching
+### 3. Occlusion Suite
 
-- `start_tvve_stage23.sh` uses fixed checkpoint paths. Replace them with the checkpoints generated on your machine.
-- Update the default RLBench data path in the scripts before training.
-- Evaluation is launched with `xvfb-run`, so make sure the relevant headless rendering dependencies are installed.
+Use the same **training** and **evaluation** commands as **RLBench** after switching the dataset paths and task lists.
 
-## <img src="https://raw.githubusercontent.com/microsoft/fluentui-emoji/main/assets/Clipboard/3D/clipboard_3d.png" width="28" alt="Clipboard" /> Project Status
+<details>
+<summary>Occlusion1 split</summary>
 
-- [x] Show more simulation results on RLBench and RLBench-OG
-- [x] Show more real-world robot results on Dobot and Franka
-- [x] Release the model and code
-- [x] Release the RLBench-OG benchmark
-- [ ] Release the RLBench-OG test code
+Update `env.tasks` in both `configs/tvve_stage1.yaml` and `configs/tvve_stage23.yaml`:
+
+```yaml
+[
+  "basketball_in_hoop_occlusion",
+  "scoop_with_spatula_occlusion",
+  "take_plate_off_colored_dish_rack_occlusion",
+  "water_plants_occlusion",
+  "block_pyramid_occlusion",
+  "solve_puzzle_occlusion",
+  "take_usb_out_of_computer_occlusion",
+  "close_drawer_occlusion",
+  "straighten_rope_occlusion",
+  "toilet_seat_down_occlusion"
+]
+```
+
+Set:
+
+```yaml
+train.demo_folder: ./data/RLBench-OG/Occlusion/train
+eval.datafolder: ./data/RLBench-OG/Occlusion/test
+```
+
+</details>
+
+<details>
+<summary>Occlusion2 split</summary>
+
+Update `env.tasks` in both `configs/tvve_stage1.yaml` and `configs/tvve_stage23.yaml`:
+
+```yaml
+[
+  "basketball_in_hoop",
+  "scoop_with_spatula",
+  "take_plate_off_colored_dish_rack",
+  "water_plants",
+  "block_pyramid",
+  "solve_puzzle",
+  "take_usb_out_of_computer",
+  "close_drawer_occlusion",
+  "straighten_rope",
+  "toilet_seat_down"
+]
+```
+
+Set:
+
+```yaml
+train.demo_folder: ./data/RLBench-OG/Generalization/train
+eval.datafolder: ./data/RLBench-OG/Occlusion/test
+```
+
+</details>
+
+Then run the same commands from [Training and Evaluation on RLBench](#training-and-evaluation-on-rlbench).
+
+### 4. Generalization Suite
+
+You can directly evaluate with the **`STAGE23_EVAL_WEIGHTS`** checkpoint trained for **Occlusion2**.
+
+First install the local **YARR** and **PerAct** packages:
+
+```bash
+cd env/YARR
+pip install -e .
+
+cd ../peract
+pip install -e .
+
+cd ../..
+```
+
+Then edit the placeholders in **`eval_og.sh`**:
+
+- `epoch=<select_which_epoch_to_eval>`
+- `model_folder=<path_to_STAGE23_EVAL_WEIGHTS_directory>`
+
+Finally run:
+
+```bash
+bash ./eval_og.sh
+```
+
+## <img src="https://raw.githubusercontent.com/microsoft/fluentui-emoji/main/assets/Package/3D/package_3d.png" width="28" alt="Package" /> Repository Layout
+
+```text
+TAVP/
+  configs/                experiment configuration files
+  env/                    RLBench-OG, PerAct, and YARR integrations
+  static/                 website images and videos
+  train_tvve_stage1.py    stage 1 training entry
+  train_tvve_stage23.py   stage 2/3 training entry
+  eval.py                 RLBench evaluation entry
+  eval_og.py              RLBench-OG evaluation entry
+  start_tvve_stage1.sh    stage 1 launch script
+  start_tvve_stage23.sh   stage 2/3 launch script
+  eval_og.sh              RLBench-OG batch evaluation script
+```
 
 ## <img src="https://raw.githubusercontent.com/microsoft/fluentui-emoji/main/assets/Books/3D/books_3d.png" width="28" alt="Books" /> Citation
 
-If you find TVVE useful for your research, please cite:
+If you find **TVVE** useful in your research, please cite:
 
 ```bibtex
 @InProceedings{Bai_2026_CVPR,
@@ -252,3 +401,7 @@ If you find TVVE useful for your research, please cite:
   year      = {2026}
 }
 ```
+
+## <img src="https://raw.githubusercontent.com/microsoft/fluentui-emoji/main/assets/Sparkles/3D/sparkles_3d.png" width="28" alt="Sparkles" /> Acknowledgements
+
+This repository builds on several excellent open-source projects, including RLBench, PyRep, RVT, PerAct, and YARR. Please also cite their original work if you use this codebase in your research.
