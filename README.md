@@ -47,6 +47,28 @@
   </a>
 </p>
 
+---
+
+<h1 align="center">RLBench-OG: A Benchmark for Evaluating Robustness and Generalization for Robotic Manipulation</h1>
+
+<p align="center">
+<a href="https://github.com/baiyu858/rlbench-og.git">
+<b style="
+border:2px solid #24292e;
+padding:10px 20px;
+border-radius:10px;
+text-decoration:none;
+display:inline-block;
+">
+🚀 Go To RLBench-OG
+</b>
+</a>
+</p>
+
+**RLBench-OG** is an extension benchmark built on top of RLBench to evaluate model robustness under occlusion and generalization to environment perturbations. The benchmark selects ten tasks from RLBench (covering simple and long-horizon tasks) and contains two main components: the Occlusion Suite and the Generalization Suite.
+
+
+
 ## <img src="https://raw.githubusercontent.com/microsoft/fluentui-emoji/main/assets/Clipboard/3D/clipboard_3d.png" width="28" alt="Clipboard" /> Table of Contents
 
 - [Highlights](#highlights)
